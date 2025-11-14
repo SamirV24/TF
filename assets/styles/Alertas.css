@@ -1,3 +1,9 @@
+#modalRecomendacion img {
+  max-height: 250px;
+  object-fit: cover;
+}
+
+
 /* Botones Sí y No del popup */
 .btn-choice {
   padding: 10px 20px;
@@ -208,6 +214,7 @@ h1 {
     font-size: 14px;
   }
 }
+
 
 
 
