@@ -1,3 +1,17 @@
+.filtro-select {
+  width: 90%;
+  max-width: 300px;
+  display: block;
+  margin: 10px auto 20px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #004aad;
+  font-weight: 600;
+  background: white;
+  cursor: pointer;
+}
+
+
 #modalRecomendacion img {
   max-height: 250px;
   object-fit: cover;
@@ -214,6 +228,7 @@ h1 {
     font-size: 14px;
   }
 }
+
 
 
 
