@@ -55,6 +55,7 @@
     <main>
       <h1>Alertas y Notificaciones</h1>
 <button class="btn btn-add" id="btnNotificaciones">Recibir Notificaciones</button>
+<button class="btn btn-add" id="btnRecomendacion">Recomendación del Día</button>
 
       <div class="btns">
         <button class="btn btn-add" id="btnAddAlerta">+ Añadir Alerta</button>
@@ -98,6 +99,22 @@
 <button id="btnSiNotificaciones" class="btn-choice btn-si">Sí</button>
 <button id="btnNoNotificaciones" class="btn-choice btn-no">No</button>
     </div>
+  </div>
+</div>
+
+    <!-- Modal Recomendación del Día -->
+<div id="modalRecomendacion" class="modal">
+  <div class="modal-card">
+    <span class="close" id="closeRecomendacion">&times;</span>
+
+    <h2>🌟 Recomendación del Día</h2>
+    <p>Vuelve seguido para ver nuevas recomendaciones sobre desinfección y almacenamiento del agua.</p>
+
+    <img id="imgRecomendacion" src="assets/images/recomendacion.jpg" alt="Recomendación" style="width:100%; border-radius:10px; margin-top:15px;">
+
+    <p id="textoRecomendacion" style="margin-top:15px; font-size:16px;">
+      Aquí aparecerá la recomendación del día. Puedes reemplazar este texto cuando gustes.
+    </p>
   </div>
 </div>
 
@@ -162,6 +179,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
