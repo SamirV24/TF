@@ -1,4 +1,32 @@
- // ----- MODAL NOTIFICACIONES -----
+// --- Modal Recomendación del Día ---
+const modalRecomendacion = document.getElementById("modalRecomendacion");
+const btnRecomendacion = document.getElementById("btnRecomendacion");
+const closeRecomendacion = document.getElementById("closeRecomendacion");
+
+btnRecomendacion.addEventListener("click", () => {
+  // Aquí puedes actualizar la imagen o el texto cada día
+  document.getElementById("textoRecomendacion").textContent =
+    "Hierve el agua durante al menos 1 minuto para eliminar microorganismos. Almacénala en envases limpios y tapados.";
+
+  // Si quieres cambiar la imagen dinámicamente:
+  // document.getElementById("imgRecomendacion").src = "assets/images/dia2.jpg";
+
+  modalRecomendacion.style.display = "flex";
+});
+
+closeRecomendacion.addEventListener("click", () => {
+  modalRecomendacion.style.display = "none";
+});
+
+// Cerrar al hacer clic fuera
+window.addEventListener("click", (e) => {
+  if (e.target === modalRecomendacion) {
+    modalRecomendacion.style.display = "none";
+  }
+});
+
+
+// ----- MODAL NOTIFICACIONES -----
 const modalNot = document.getElementById("modalNotificaciones");
 const btnNot = document.getElementById("btnNotificaciones");
 const closeNot = document.getElementById("closeNotificaciones");
@@ -202,6 +230,7 @@ hamburger.addEventListener("click", () => {
     hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
 });
+
 
 
 
