@@ -19,38 +19,37 @@
   </head>
   <body>
     <header class="header">
-      <div class="logo">
-        <a href="SesionIniciada.html">
-          <img src="assets\images\AquaAlert.jpg" alt="Logo AquaAlert" />
-        </a>
+  <div class="logo">
+    <a href="SesionIniciada.html">
+      <img src="assets\images\AquaAlert.jpg" alt="Logo AquaAlert" />
+    </a>
+  </div>
+
+  <!-- Botón menú hamburguesa -->
+  <div class="hamburger" id="hamburger">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-item"><a href="SesionIniciada.html">Inicio</a></div>
+    <div class="nav-item"><a href="SobreNosotros.html">Sobre Nosotros</a></div>
+    <div class="nav-item"><a href="Contacto.html">Contacto</a></div>
+
+    <div id="auth-buttons">
+      <a href="Registro.html" class="btn-registrarse">Registrarse</a>
+      <a href="Login.html" class="btn-iniciarSesion">Iniciar Sesión</a>
+    </div>
+
+    <div id="profile-button">
+      <button class="btn-iniciarSesion" id="btnPerfil">Perfil</button>
+      <div id="profile-menu">
+        <a href="Perfil.html">Perfil</a>
+        <a href="#" id="cerrarSesion">Cerrar sesión</a>
       </div>
+    </div>
+  </nav>
+</header>
 
-      <!-- Botón menú hamburguesa -->
-      <div class="hamburger" id="hamburger">
-        <i class="fa-solid fa-bars"></i>
-      </div>
-
-      <nav class="nav">
-        <div class="nav-item"><a href="SesionIniciada.html">Inicio</a></div>
-        <div class="nav-item">
-          <a href="SobreNosotros.html">Sobre Nosotros</a>
-        </div>
-        <div class="nav-item"><a href="Contacto.html">Contacto</a></div>
-
-        <div id="auth-buttons">
-          <a href="Registro.html" class="btn-registrarse">Registrarse</a>
-          <a href="Login.html" class="btn-iniciarSesion">Iniciar Sesión</a>
-        </div>
-
-              <div id="profile-button">
-        <button class="btn-iniciarSesion" id="btnPerfil">Perfil</button>
-        <div id="profile-menu">
-          <a href="Perfil.html">Perfil</a>
-          <a href="#" id="cerrarSesion">Cerrar sesión</a>
-        </div>
-      </div>
-    </header>
-      </nav>
 
     <!-- Main -->
     <main>
@@ -163,6 +162,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
