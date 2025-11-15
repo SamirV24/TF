@@ -71,6 +71,7 @@
 <div class="btns">
   <button class="btn btn-add" id="btnNotificaciones">Recibir Notificaciones</button>
   <button class="btn btn-add" id="btnRecomendacion">Recomendación del Día</button>
+  <button class="btn btn-add" id="btnNotifPersonalizadas">Notificaciones Personalizadas</button>
 </div>
       <div class="btns">
         <button class="btn btn-add" id="btnAddAlerta">+ Añadir Alerta</button>
@@ -133,6 +134,50 @@
   </div>
 </div>
 
+    <!-- Modal Notificaciones Personalizadas -->
+<div id="modalNotifPersonalizadas" class="modal">
+  <div class="modal-card">
+    <span class="close" id="closeNotifPersonalizadas">&times;</span>
+
+    <h2>Notificaciones Personalizadas</h2>
+    <p>Elige tu distrito para recibir alertas de agua no segura por SMS.</p>
+
+    <select id="selectDistritoNotif" class="filtro-select" style="margin-top: 15px;">
+      <option value="" disabled selected>Selecciona un distrito</option>
+      <option value="San Juan de Lurigancho">San Juan de Lurigancho</option>
+      <option value="Comas">Comas</option>
+      <option value="San Martín de Porres">San Martín de Porres</option>
+      <option value="Villa El Salvador">Villa El Salvador</option>
+      <option value="Los Olivos">Los Olivos</option>
+      <option value="Ate">Ate</option>
+      <option value="Rímac">Rímac</option>
+      <option value="Surco">Surco</option>
+      <option value="Breña">Breña</option>
+      <option value="Chorrillos">Chorrillos</option>
+    </select>
+
+    <button id="btnConfirmarNotif" class="btn btn-add" style="margin-top:20px;">
+      Activar Notificaciones
+    </button>
+  </div>
+</div>
+
+    <!-- Modal Confirmación -->
+<div id="modalConfirmacionNotif" class="modal">
+  <div class="modal-card">
+    <span class="close" id="closeConfirmacionNotif">&times;</span>
+
+    <h2>¿Estás seguro?</h2>
+    <p>¿Deseas activar notificaciones por SMS para este distrito?</p>
+
+    <div style="display:flex; gap:1rem; justify-content:center; margin-top:20px;">
+      <button id="btnConfirmarSi" class="btn-choice btn-si">Sí</button>
+      <button id="btnConfirmarNo" class="btn-choice btn-no">No</button>
+    </div>
+  </div>
+</div>
+
+
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
@@ -194,6 +239,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
