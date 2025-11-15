@@ -269,31 +269,11 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       div.addEventListener("click", () => {
-  let mensaje =
-    `Detalles de la alerta:\n\n` +
-    `Título: ${a.titulo}\n` +
-    `Lugar: ${a.lugar}\n` +
-    `Fecha: ${a.fecha}\n` +
-    `Hora: ${a.hora}\n` +
-    `Estado: ${a.estado}\n\n` +
-    `Descripción: ${a.descripcion}`;
-
-  if (a.evidencia) {
-    const nuevaVentana = window.open("", "_blank");
-    nuevaVentana.document.write(`
-      <h2>${a.titulo}</h2>
-      <p><b>Lugar:</b> ${a.lugar}</p>
-      <p><b>Fecha:</b> ${a.fecha}</p>
-      <p><b>Hora:</b> ${a.hora}</p>
-      <p><b>Estado:</b> ${a.estado}</p>
-      <p><b>Descripción:</b> ${a.descripcion}</p>
-      <h3>Evidencia:</h3>
-      <img src="${a.evidencia}" style="width:100%;max-width:400px;border-radius:10px;">
-    `);
-  } else {
-    alert(mensaje);
-  }
+  alert(
+    `Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${a.fecha}\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${a.descripcion}`
+  );
 });
+
 
 
 
@@ -448,6 +428,7 @@ formAlerta.addEventListener("submit", async (e) => {
   }
 
 });
+
 
 
 
