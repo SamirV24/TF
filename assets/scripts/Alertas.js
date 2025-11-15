@@ -1,3 +1,61 @@
+//Notificaciones Personalizadas
+
+// Elementos
+const btnNotifPersonalizadas = document.getElementById("btnNotifPersonalizadas");
+const modalNotifPersonalizadas = document.getElementById("modalNotifPersonalizadas");
+const closeNotifPersonalizadas = document.getElementById("closeNotifPersonalizadas");
+
+const btnConfirmarNotif = document.getElementById("btnConfirmarNotif");
+const selectDistritoNotif = document.getElementById("selectDistritoNotif");
+
+// Modal de confirmación
+const modalConfirmacionNotif = document.getElementById("modalConfirmacionNotif");
+const closeConfirmacionNotif = document.getElementById("closeConfirmacionNotif");
+const btnConfirmarSi = document.getElementById("btnConfirmarSi");
+const btnConfirmarNo = document.getElementById("btnConfirmarNo");
+
+// Abrir modal principal
+btnNotifPersonalizadas.addEventListener("click", () => {
+  modalNotifPersonalizadas.style.display = "flex";
+});
+
+// Cerrar modal principal
+closeNotifPersonalizadas.addEventListener("click", () => {
+  modalNotifPersonalizadas.style.display = "none";
+});
+
+// Click en botón de confirmar
+btnConfirmarNotif.addEventListener("click", () => {
+  if (!selectDistritoNotif.value) {
+    alert("Por favor selecciona un distrito.");
+    return;
+  }
+
+  // Abrir segundo modal
+  modalConfirmacionNotif.style.display = "flex";
+});
+
+// Cerrar modal confirmación
+closeConfirmacionNotif.addEventListener("click", () => {
+  modalConfirmacionNotif.style.display = "none";
+});
+
+// Acción Si
+btnConfirmarSi.addEventListener("click", () => {
+  const distrito = selectDistritoNotif.value;
+
+  alert(`✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`);
+
+  modalNotifPersonalizadas.style.display = "none";
+  modalConfirmacionNotif.style.display = "none";
+});
+
+// Acción No
+btnConfirmarNo.addEventListener("click", () => {
+  modalConfirmacionNotif.style.display = "none";
+});
+
+
 const filtroDistrito = document.getElementById("filtroDistrito");
 const listaAlertas = document.getElementById("alertasList");
 
@@ -284,6 +342,7 @@ hamburger.addEventListener("click", () => {
     hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
 });
+
 
 
 
