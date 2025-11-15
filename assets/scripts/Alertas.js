@@ -17,10 +17,10 @@ hamburger.addEventListener("click", () => {
   }
 });
 
-//    ESPERAR A QUE EL HTML CARGUE
+// ESPERAR A QUE HTML CARGUE
 document.addEventListener("DOMContentLoaded", () => {
 
-  //  NOTIFICACIONES PERSONALIZADAS
+  // NOTIFICACIONES PERSONALIZADAS
   const btnNotifPersonalizadas = document.getElementById("btnNotifPersonalizadas");
   const modalNotifPersonalizadas = document.getElementById("modalNotifPersonalizadas");
   const closeNotifPersonalizadas = document.getElementById("closeNotifPersonalizadas");
@@ -33,32 +33,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnConfirmarSi = document.getElementById("btnConfirmarSi");
   const btnConfirmarNo = document.getElementById("btnConfirmarNo");
 
-  // Abrir ventana principal
   btnNotifPersonalizadas.addEventListener("click", () => {
     modalNotifPersonalizadas.style.display = "flex";
   });
 
-  // Cerrar ventana principal
   closeNotifPersonalizadas.addEventListener("click", () => {
     modalNotifPersonalizadas.style.display = "none";
   });
 
-  // Confirmar distrito
   btnConfirmarNotif.addEventListener("click", () => {
     if (!selectDistritoNotif.value) {
       alert("Por favor selecciona un distrito.");
       return;
     }
-
     modalConfirmacionNotif.style.display = "flex";
   });
 
-  // Cerrar confirmación
   closeConfirmacionNotif.addEventListener("click", () => {
     modalConfirmacionNotif.style.display = "none";
   });
 
-  // Confirmar "Sí"
   btnConfirmarSi.addEventListener("click", () => {
     const distrito = selectDistritoNotif.value;
 
@@ -68,12 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
     modalConfirmacionNotif.style.display = "none";
   });
 
-  // Confirmar "No"
   btnConfirmarNo.addEventListener("click", () => {
     modalConfirmacionNotif.style.display = "none";
   });
 
-  //     FILTRO DE DISTRITOS
+  // FILTRO DE DISTRITOS
   const filtroDistrito = document.getElementById("filtroDistrito");
   const listaAlertas = document.getElementById("alertasList");
 
@@ -98,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //   RECOMENDACIÓN DEL DÍA
+  // RECOMENDACIÓN DEL DÍA
   const modalRecomendacion = document.getElementById("modalRecomendacion");
   const btnRecomendacion = document.getElementById("btnRecomendacion");
   const closeRecomendacion = document.getElementById("closeRecomendacion");
@@ -120,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  //  NOTIFICACIONES PRINCIPALES
+  // NOTIFICACIONES PRINCIPALES
   const modalNot = document.getElementById("modalNotificaciones");
   const btnNot = document.getElementById("btnNotificaciones");
   const closeNot = document.getElementById("closeNotificaciones");
@@ -151,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  //     USUARIO LOGUEADO
+  // USUARIO LOGUEADO
   const nombreActivo = localStorage.getItem("usuarioActivo");
   const authButtons = document.getElementById("auth-buttons");
   const profileButton = document.getElementById("profile-button");
@@ -172,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //          ALERTAS
+  // ALERTAS
   let alertas = [
     {
       titulo: "Niveles bajos de cloro residual",
@@ -254,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderAlertas();
 
-  //    AGREGAR NUEVA ALERTA
+  // AGREGAR NUEVA ALERTA
   const modal = document.getElementById("modalAlerta");
   const btnAdd = document.getElementById("btnAddAlerta");
   const spanClose = document.querySelector(".modal .close");
@@ -293,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fecha,
         hora,
         descripcion,
-        estado: "En proceso"   // todas empiezan en proceso
+        estado: "En proceso"
       });
 
       renderAlertas();
@@ -306,11 +299,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   document.getElementById("btnAtras")
     .addEventListener("click", () => window.history.back());
 
-
+  // FOOTER USER
   if (nombreActivo) {
     const footerUserSection = document.getElementById("footer-user-section");
     footerUserSection.innerHTML = `
@@ -330,7 +322,67 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  // ============================
+  // CONFIGURAR PREFERENCIAS ★ NUEVO
+  // ============================
+
+  const btnConfigPreferencias = document.getElementById("btnConfigPreferencias");
+  const modalPreferencias = document.getElementById("modalPreferencias");
+  const closePreferencias = document.getElementById("closePreferencias");
+
+  const selectTipoAlerta = document.getElementById("selectTipoAlerta");
+  const selectFrecuencia = document.getElementById("selectFrecuencia");
+
+  const modalConfirmPreferencias = document.getElementById("modalConfirmPreferencias");
+  const closeConfirmPreferencias = document.getElementById("closeConfirmPreferencias");
+
+  const btnGuardarPreferencias = document.getElementById("btnGuardarPreferencias");
+  const btnPrefSi = document.getElementById("btnPrefSi");
+  const btnPrefNo = document.getElementById("btnPrefNo");
+
+  // Abrir modal
+  btnConfigPreferencias.addEventListener("click", () => {
+    modalPreferencias.style.display = "flex";
+  });
+
+  // Cerrar modal
+  closePreferencias.addEventListener("click", () => {
+    modalPreferencias.style.display = "none";
+  });
+
+  // Guardar → abrir confirmación
+  btnGuardarPreferencias.addEventListener("click", () => {
+    modalConfirmPreferencias.style.display = "flex";
+  });
+
+  // Confirmación cerrar
+  closeConfirmPreferencias.addEventListener("click", () => {
+    modalConfirmPreferencias.style.display = "none";
+  });
+
+  // SI
+  btnPrefSi.addEventListener("click", () => {
+    const tipo = selectTipoAlerta.value;
+    const frecuencia = selectFrecuencia.value;
+
+    localStorage.setItem(
+      "preferenciasAlertas",
+      JSON.stringify({ tipo, frecuencia })
+    );
+
+    alert(`✔ Preferencias guardadas.\nTipo: ${tipo}\nFrecuencia: ${frecuencia}`);
+
+    modalPreferencias.style.display = "none";
+    modalConfirmPreferencias.style.display = "none";
+  });
+
+  // NO
+  btnPrefNo.addEventListener("click", () => {
+    modalConfirmPreferencias.style.display = "none";
+  });
+
 });
+
 
 
 
