@@ -1,4 +1,4 @@
-//  MENÚ HAMBURGUESA//  MENÚ HAMBURGUESA
+//  MENÚ HAMBURGUESA
 const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".nav");
 const registrarBtn = document.querySelector(".btn-registrarse");
@@ -142,12 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ====================================
-  // ALERTAS (con estados)
+  // ALERTAS (con estados e imágenes)
   // ====================================
   let alertas = [
-    { titulo: "Niveles bajos de cloro residual", lugar: "San Juan de Lurigancho", fecha: "05/10/2025", hora: "07:45 a.m.", descripcion: "Se detectó un nivel de cloro inferior al recomendado.", estado: "En proceso" },
-    { titulo: "Corte programado de servicio", lugar: "Villa El Salvador", fecha: "05/10/2025", hora: "10:00 a.m. - 8:00 p.m.", descripcion: "Corte por mantenimiento.", estado: "Terminado" },
-    { titulo: "Presencia de turbidez visible", lugar: "Comas", fecha: "06/10/2025", hora: "04:30 p.m.", descripcion: "Evita consumir directamente.", estado: "Solucionado" },
+    { titulo: "Niveles bajos de cloro residual", lugar: "San Juan de Lurigancho", fecha: "05/10/2025", hora: "07:45 a.m.", descripcion: "Se detectó un nivel de cloro inferior al recomendado.", estado: "En proceso", imagen: null },
+    { titulo: "Corte programado de servicio", lugar: "Villa El Salvador", fecha: "05/10/2025", hora: "10:00 a.m. - 8:00 p.m.", descripcion: "Corte por mantenimiento.", estado: "Terminado", imagen: null },
+    { titulo: "Presencia de turbidez visible", lugar: "Comas", fecha: "06/10/2025", hora: "04:30 p.m.", descripcion: "Evita consumir directamente.", estado: "Solucionado", imagen: null },
   ];
 
   function renderAlertas() {
@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><b>Lugar:</b> <span class="alerta-lugar">${a.lugar}</span></p>
             <p><b>Fecha:</b> ${a.fecha}</p>
             <p><b>Hora:</b> ${a.hora}</p>
+            ${a.imagen ? `<img src="${a.imagen}" alt="Imagen Alerta" class="alerta-img" />` : ""}
             <p><b>Estado:</b> <span class="estado ${a.estado.replace(" ", "-").toLowerCase()}">${a.estado}</span></p>
           </div>
         </div>
@@ -259,5 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
   btnPrefNo?.addEventListener("click", () => { modalConfirmPreferencias.style.display = "none"; });
 
 });
+
 
 
