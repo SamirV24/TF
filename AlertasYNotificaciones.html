@@ -93,6 +93,8 @@
           <input type="text" id="lugar" placeholder="Lugar" />
           <input type="date" id="fecha" />
           <input type="time" id="hora" />
+          <label>Subir evidencia (opcional):</label>
+          <input type="file" id="imagen" accept="image/*" />
           <textarea
             id="descripcion"
             placeholder="Descripción de la alerta"
@@ -128,7 +130,6 @@
     <p>Vuelve seguido para ver nuevas recomendaciones sobre desinfección y almacenamiento del agua.</p>
 
     <img id="imgRecomendacion" src="assets/images/Recomendacion.jpg" alt="Recomendación" style="width:100%; border-radius:10px; margin-top:15px;">
-
     <p id="textoRecomendacion" style="margin-top:15px; font-size:16px;">
       Aquí aparecerá la recomendación del día. Puedes reemplazar este texto cuando gustes.
     </p>
@@ -285,6 +286,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
