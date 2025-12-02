@@ -42,6 +42,106 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ====================================
+// HISTORIAL DE ACTIVIDAD (SERVICIO)
+// ====================================
+
+// Elementos
+const serviceHistorial = document.getElementById("serviceHistorial");
+const modalHistorial = document.getElementById("modalHistorial");
+const closeHistorial = document.getElementById("closeHistorial");
+
+const filtroTipoHistorial = document.getElementById("filtroTipoHistorial");
+const filtroTextoHistorial = document.getElementById("filtroTextoHistorial");
+const listaHistorial = document.getElementById("listaHistorial");
+
+// Abrir modal al hacer clic en la tarjeta
+serviceHistorial?.addEventListener("click", () => {
+  modalHistorial.style.display = "flex";
+  cargarHistorial();
+});
+
+// Cerrar modal
+closeHistorial?.addEventListener("click", () => {
+  modalHistorial.style.display = "none";
+});
+
+// Cerrar haciendo clic fuera
+window.addEventListener("click", (e) => {
+  if (e.target === modalHistorial) {
+    modalHistorial.style.display = "none";
+  }
+});
+
+// === FUNCIÓN PARA CARGAR HISTORIAL ===
+function cargarHistorial() {
+  let historial = JSON.parse(localStorage.getItem("historialAcciones") || "[]");
+
+  const tipo = filtroTipoHistorial.value;
+  const texto = filtroTextoHistorial.value.toLowerCase().trim();
+
+  listaHistorial.innerHTML = "";
+
+  if (historial.length === 0) {
+    listaHistorial.innerHTML = `<p>No hay acciones registradas.</p>`;
+    return;
+  }
+
+  historial = historial.reverse(); // Más recientes primero
+
+  const filtrado = historial.filter((item) => {
+    const coincideTipo = tipo === "todos" || item.tipo === tipo;
+    const textoCompleto =
+      (item.usuario + " " + item.detalle + " " + item.tipo).toLowerCase();
+    const coincideTexto = textoCompleto.includes(texto);
+
+    return coincideTipo && coincideTexto;
+  });
+
+  if (filtrado.length === 0) {
+    listaHistorial.innerHTML = `<p>No se encontraron registros.</p>`;
+    return;
+  }
+
+  filtrado.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "historial-card";
+
+    const icono = document.createElement("div");
+    icono.className = "historial-icono";
+
+    if (item.tipo === "Inicio de sesión") {
+      icono.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i>';
+    } else if (item.tipo.includes("fallido")) {
+      icono.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+    } else {
+      icono.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+    }
+
+    const info = document.createElement("div");
+    info.className = "historial-info";
+    info.innerHTML = `
+      <p><b>Usuario:</b> ${item.usuario}</p>
+      <p><b>Acción:</b> ${item.tipo}</p>
+      <p><b>Fecha:</b> ${item.fechaHora}</p>
+      ${
+        item.detalle 
+        ? `<p><b>Detalle:</b> ${item.detalle}</p>`
+        : ""
+      }
+    `;
+
+    card.appendChild(icono);
+    card.appendChild(info);
+    listaHistorial.appendChild(card);
+  });
+}
+
+// Filtros dinámicos
+filtroTipoHistorial?.addEventListener("change", cargarHistorial);
+filtroTextoHistorial?.addEventListener("input", cargarHistorial);
+
+
 // ----- MENÚ HAMBURGUESA -----
 const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".nav");
@@ -62,3 +162,4 @@ hamburger.addEventListener("click", () => {
     hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
 });
+
