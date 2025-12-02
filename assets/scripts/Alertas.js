@@ -1,49 +1,3 @@
-/* --- MODAL DEL INFORME MENSUAL --- */
-#modalInforme {
-  display: none;
-  position: fixed;
-  z-index: 9999;          
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);  
-  justify-content: center;
-  align-items: center;
-}
-
-#modalInforme .modal-content {
-  background: #ffffff;     
-  width: 90%;
-  max-width: 850px;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 18px rgba(0,0,0,0.25);
-  text-align: center;
-  animation: aparecer 0.25s ease-in-out;
-}
-
-/* Botón cerrar */
-#closeInforme {
-  float: right;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-/* Animación suave */
-@keyframes aparecer {
-  from { transform: scale(0.85); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-/* Espaciado extra para estadísticas */
-#estadisticasDistritos p {
-  margin: 6px 0;
-  font-size: 14px;
-  color: #333;
-}
-
-
 //  MENÚ HAMBURGUESA
 const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".nav");
@@ -939,6 +893,7 @@ ${
     }
   });
 });
+
 
 
 
