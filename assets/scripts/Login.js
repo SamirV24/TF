@@ -1,33 +1,46 @@
 // ====================================
 // FUNCIÓN PARA REGISTRAR ACCIONES
 // ====================================
-function registrarAccionSistema(tipoAccion, detalle = "") {
+function registrarAccionSistema(tipoAccion, detalle = "", usuarioRelacionado = null) {
+  let historialActual;
+
   try {
-    const historialActual = JSON.parse(
-      localStorage.getItem("historialAcciones") || "[]"
-    );
+    const raw = localStorage.getItem("historialAcciones");
+    // Si no hay nada, o está mal formado, usamos []
+    historialActual = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(historialActual)) {
+      historialActual = [];
+    }
+  } catch (error) {
+    console.error("Error leyendo historialAcciones, se reinicia:", error);
+    historialActual = [];
+  }
 
-    const usuarioActivo =
-      localStorage.getItem("usuarioActivo") || "Usuario no identificado";
+  // Usuario asociado a la acción
+  const usuarioActivo =
+    usuarioRelacionado ||
+    localStorage.getItem("usuarioActivo") ||
+    "Usuario no identificado";
 
-    const fechaHora = new Date().toLocaleString("es-PE", {
-      dateStyle: "short",
-      timeStyle: "short",
-    });
+  const fechaHora = new Date().toLocaleString("es-PE", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
 
-    historialActual.push({
-      usuario: usuarioActivo,
-      tipo: tipoAccion,
-      detalle: detalle,
-      fechaHora: fechaHora,
-    });
+  historialActual.push({
+    usuario: usuarioActivo,
+    tipo: tipoAccion,
+    detalle: detalle,
+    fechaHora: fechaHora,
+  });
 
+  try {
     localStorage.setItem(
       "historialAcciones",
       JSON.stringify(historialActual)
     );
   } catch (error) {
-    console.error("Error registrando acción en historial:", error);
+    console.error("Error guardando historialAcciones:", error);
   }
 }
 
@@ -54,7 +67,8 @@ document.querySelector("form").addEventListener("submit", function (e) {
     // registrar en historial
     registrarAccionSistema(
       "Inicio de sesión",
-      `Inicio de sesión correcto para el usuario "${usuario}".`
+      `Inicio de sesión correcto para el usuario "${usuario}".`,
+      usuario
     );
 
     window.location.href = "SesionIniciada.html";
@@ -62,7 +76,8 @@ document.querySelector("form").addEventListener("submit", function (e) {
     // registrar intento fallido
     registrarAccionSistema(
       "Intento de inicio de sesión fallido",
-      `Se intentó iniciar sesión con el usuario "${usuario}".`
+      `Se intentó iniciar sesión con el usuario "${usuario}".`,
+      usuario
     );
 
     window.location.href = "ErrorRegistro.html";
@@ -89,4 +104,5 @@ hamburger.addEventListener("click", () => {
     hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
 });
+
 
