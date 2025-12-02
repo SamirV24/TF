@@ -1,3 +1,39 @@
+// ====================================
+// FUNCIÓN PARA REGISTRAR ACCIONES
+// ====================================
+function registrarAccionSistema(tipoAccion, detalle = "") {
+  try {
+    const historialActual = JSON.parse(
+      localStorage.getItem("historialAcciones") || "[]"
+    );
+
+    const usuarioActivo =
+      localStorage.getItem("usuarioActivo") || "Usuario no identificado";
+
+    const fechaHora = new Date().toLocaleString("es-PE", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+
+    historialActual.push({
+      usuario: usuarioActivo,
+      tipo: tipoAccion,
+      detalle: detalle,
+      fechaHora: fechaHora,
+    });
+
+    localStorage.setItem(
+      "historialAcciones",
+      JSON.stringify(historialActual)
+    );
+  } catch (error) {
+    console.error("Error registrando acción en historial:", error);
+  }
+}
+
+// ====================================
+// MANEJO DEL LOGIN
+// ====================================
 document.querySelector("form").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -8,11 +44,27 @@ document.querySelector("form").addEventListener("submit", function (e) {
   const contrasenaGuardada = localStorage.getItem("contrasenaRegistrada");
   const nombreGuardado = localStorage.getItem("nombreRegistrado");
 
+  // limpiar cualquier usuario activo previo
+  localStorage.removeItem("usuarioActivo");
+
   if (usuario === usuarioGuardado && contrasena === contrasenaGuardada) {
-    const nombre = localStorage.getItem("nombreRegistrado");
+    const nombre = nombreGuardado || usuarioGuardado || usuario;
     localStorage.setItem("usuarioActivo", nombre);
+
+    // registrar en historial
+    registrarAccionSistema(
+      "Inicio de sesión",
+      `Inicio de sesión correcto para el usuario "${usuario}".`
+    );
+
     window.location.href = "SesionIniciada.html";
   } else {
+    // registrar intento fallido
+    registrarAccionSistema(
+      "Intento de inicio de sesión fallido",
+      `Se intentó iniciar sesión con el usuario "${usuario}".`
+    );
+
     window.location.href = "ErrorRegistro.html";
   }
 });
@@ -29,7 +81,7 @@ hamburger.addEventListener("click", () => {
   registrarBtn.classList.toggle("nav-active");
   iniciarSesionBtn.classList.toggle("nav-active");
 
-  // Cambiar ícono del menú)
+  // Cambiar ícono del menú
   hamburger.classList.toggle("open");
   if (hamburger.classList.contains("open")) {
     hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -37,3 +89,4 @@ hamburger.addEventListener("click", () => {
     hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
 });
+
