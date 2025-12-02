@@ -88,6 +88,9 @@
     <button class="btn btn-add" id="btnEncuestas">
       Recibir encuestas
     </button>
+    <button id="btnGenerarInforme" class="btn btn-add">
+  Generar informe mensual
+</button>
   </div>
 
   <div class="btns">
@@ -100,6 +103,20 @@
     <a href="SesionIniciada.html" class="btn btn-volver">← Volver</a>
   </div>
 </main>
+
+    <!-- Modal del informe -->
+<div id="modalInforme" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeInforme">&times;</span>
+    <h2>Informe Mensual de Calidad del Agua</h2>
+
+    <canvas id="graficoDistritos" style="margin: 20px 0; max-height: 300px;"></canvas>
+
+    <div id="estadisticasDistritos"></div>
+
+    <button id="btnExportarPDF" class="btn btn-add">Exportar PDF</button>
+  </div>
+</div>
 
     <!-- MODAL CREAR ALERTA -->
     <div id="modalAlerta" class="modal">
@@ -393,9 +410,12 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
