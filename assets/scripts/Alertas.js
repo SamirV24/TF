@@ -433,6 +433,11 @@ ${
   Revisión técnica
 </button>
 
+<button class="btn btn-add btn-compartir" data-index="${index}">
+  Compartir
+</button>
+
+
           </div>
         </div>
         <i class="fa-solid fa-arrow-right"></i>
@@ -893,6 +898,7 @@ ${
     }
   });
 });
+
 
 
 
