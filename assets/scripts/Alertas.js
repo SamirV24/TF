@@ -24,13 +24,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // ====================================
   // NOTIFICACIONES PERSONALIZADAS
   // ====================================
-  const btnNotifPersonalizadas = document.getElementById("btnNotifPersonalizadas");
-  const modalNotifPersonalizadas = document.getElementById("modalNotifPersonalizadas");
-  const closeNotifPersonalizadas = document.getElementById("closeNotifPersonalizaciones");
+  const btnNotifPersonalizadas = document.getElementById(
+    "btnNotifPersonalizadas"
+  );
+  const modalNotifPersonalizadas = document.getElementById(
+    "modalNotifPersonalizadas"
+  );
+  const closeNotifPersonalizadas = document.getElementById(
+    "closeNotifPersonalizaciones"
+  );
   const btnConfirmarNotif = document.getElementById("btnConfirmarNotif");
   const selectDistritoNotif = document.getElementById("selectDistritoNotif");
-  const modalConfirmacionNotif = document.getElementById("modalConfirmacionNotif");
-  const closeConfirmacionNotif = document.getElementById("closeConfirmacionNotif");
+  const modalConfirmacionNotif = document.getElementById(
+    "modalConfirmacionNotif"
+  );
+  const closeConfirmacionNotif = document.getElementById(
+    "closeConfirmacionNotif"
+  );
   const btnConfirmarSi = document.getElementById("btnConfirmarSi");
   const btnConfirmarNo = document.getElementById("btnConfirmarNo");
 
@@ -56,7 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnConfirmarSi?.addEventListener("click", () => {
     const distrito = selectDistritoNotif.value;
-    alert(`✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`);
+    alert(
+      `✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`
+    );
     modalNotifPersonalizadas.style.display = "none";
     modalConfirmacionNotif.style.display = "none";
   });
@@ -76,9 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function filtrarAlertas() {
     const distritoSeleccionado = filtroDistrito.value;
     const tarjetas = document.querySelectorAll(".alerta-card");
-    tarjetas.forEach(card => {
-      const lugar = card.querySelector(".alerta-lugar").textContent.trim();
-      card.style.display = distritoSeleccionado === "todos" || lugar === distritoSeleccionado ? "flex" : "none";
+    tarjetas.forEach((card) => {
+      const lugar = card
+        .querySelector(".alerta-lugar")
+        .textContent.trim();
+      card.style.display =
+        distritoSeleccionado === "todos" || lugar === distritoSeleccionado
+          ? "flex"
+          : "none";
     });
   }
 
@@ -100,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener("click", (e) => {
-    if (e.target === modalRecomendacion) modalRecomendacion.style.display = "none";
+    if (e.target === modalRecomendacion)
+      modalRecomendacion.style.display = "none";
   });
 
   // ====================================
@@ -112,10 +130,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSiNot = document.getElementById("btnSiNotificaciones");
   const btnNoNot = document.getElementById("btnNoNotificaciones");
 
-  btnNot?.addEventListener("click", () => modalNot.style.display = "flex");
-  closeNot?.addEventListener("click", () => modalNot.style.display = "none");
-  btnSiNot?.addEventListener("click", () => { alert("Has elegido recibir notificaciones."); modalNot.style.display = "none"; });
-  btnNoNot?.addEventListener("click", () => { alert("Has elegido no recibir notificaciones."); modalNot.style.display = "none"; });
+  btnNot?.addEventListener("click", () => (modalNot.style.display = "flex"));
+  closeNot?.addEventListener("click", () => (modalNot.style.display = "none"));
+  btnSiNot?.addEventListener("click", () => {
+    alert("Has elegido recibir notificaciones.");
+    modalNot.style.display = "none";
+  });
+  btnNoNot?.addEventListener("click", () => {
+    alert("Has elegido no recibir notificaciones.");
+    modalNot.style.display = "none";
+  });
 
   // ====================================
   // USUARIO LOGUEADO
@@ -138,20 +162,63 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("usuarioActivo");
       window.location.href = "index.html";
     });
+
+    // Footer dinámico
+    const footerUserSection = document.getElementById("footer-user-section");
+    if (footerUserSection) {
+      footerUserSection.innerHTML = `
+        <h4 class="active">Perfil de ${nombreActivo}</h4>
+        <ul>
+          <li><a href="Perfil.html">Ver Perfil</a></li>
+          <li><a href="#" id="cerrarSesionFooter">Cerrar Sesión</a></li>
+        </ul>
+      `;
+      document
+        .getElementById("cerrarSesionFooter")
+        ?.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("usuarioActivo");
+          window.location.href = "index.html";
+        });
+    }
   }
 
   // ====================================
   // ALERTAS (con estados e imágenes)
   // ====================================
   let alertas = [
-    { titulo: "Niveles bajos de cloro residual", lugar: "San Juan de Lurigancho", fecha: "05/10/2025", hora: "07:45 a.m.", descripcion: "Se detectó un nivel de cloro inferior al recomendado.", estado: "En proceso", imagen: null },
-    { titulo: "Corte programado de servicio", lugar: "Villa El Salvador", fecha: "05/10/2025", hora: "10:00 a.m. - 8:00 p.m.", descripcion: "Corte por mantenimiento.", estado: "Terminado", imagen: null },
-    { titulo: "Presencia de turbidez visible", lugar: "Comas", fecha: "06/10/2025", hora: "04:30 p.m.", descripcion: "Evita consumir directamente.", estado: "Solucionado", imagen: null },
+    {
+      titulo: "Niveles bajos de cloro residual",
+      lugar: "San Juan de Lurigancho",
+      fecha: "05/10/2025",
+      hora: "07:45 a.m.",
+      descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
+      estado: "En proceso",
+      imagen: null,
+    },
+    {
+      titulo: "Corte programado de servicio",
+      lugar: "Villa El Salvador",
+      fecha: "05/10/2025",
+      hora: "10:00 a.m. - 8:00 p.m.",
+      descripcion: "Corte por mantenimiento.",
+      estado: "Terminado",
+      imagen: null,
+    },
+    {
+      titulo: "Presencia de turbidez visible",
+      lugar: "Comas",
+      fecha: "06/10/2025",
+      hora: "04:30 p.m.",
+      descripcion: "Evita consumir directamente.",
+      estado: "Solucionado",
+      imagen: null,
+    },
   ];
 
   function renderAlertas() {
     listaAlertas.innerHTML = "";
-    alertas.forEach(a => {
+    alertas.forEach((a) => {
       if (!a.estado) a.estado = "En proceso";
       const div = document.createElement("div");
       div.className = "alerta-card";
@@ -163,14 +230,22 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><b>Lugar:</b> <span class="alerta-lugar">${a.lugar}</span></p>
             <p><b>Fecha:</b> ${a.fecha}</p>
             <p><b>Hora:</b> ${a.hora}</p>
-            ${a.imagen ? `<img src="${a.imagen}" alt="Imagen Alerta" class="alerta-img" />` : ""}
-            <p><b>Estado:</b> <span class="estado ${a.estado.replace(" ", "-").toLowerCase()}">${a.estado}</span></p>
+            ${
+              a.imagen
+                ? `<img src="${a.imagen}" alt="Imagen Alerta" class="alerta-img" />`
+                : ""
+            }
+            <p><b>Estado:</b> <span class="estado ${a.estado
+              .replace(" ", "-")
+              .toLowerCase()}">${a.estado}</span></p>
           </div>
         </div>
         <i class="fa-solid fa-arrow-right"></i>
       `;
       div.addEventListener("click", () => {
-        alert(`Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${a.fecha}\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${a.descripcion}`);
+        alert(
+          `Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${a.fecha}\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${a.descripcion}`
+        );
       });
       listaAlertas.appendChild(div);
     });
@@ -188,11 +263,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputImagen = document.getElementById("imagenAlerta");
   const previewImagen = document.getElementById("previewImagen");
 
-  btnAdd?.addEventListener("click", () => { modal.style.display = "flex"; mensajeForm.textContent = ""; });
+  btnAdd?.addEventListener("click", () => {
+    modal.style.display = "flex";
+    mensajeForm.textContent = "";
+  });
 
-  spanClose?.addEventListener("click", () => { modal.style.display = "none"; previewImagen.style.display = "none"; });
+  spanClose?.addEventListener("click", () => {
+    modal.style.display = "none";
+    previewImagen.style.display = "none";
+  });
 
-  window.addEventListener("click", (e) => { if (e.target == modal) { modal.style.display = "none"; previewImagen.style.display = "none"; } });
+  window.addEventListener("click", (e) => {
+    if (e.target == modal) {
+      modal.style.display = "none";
+      previewImagen.style.display = "none";
+    }
+  });
 
   // Mostrar vista previa de la imagen
   inputImagen?.addEventListener("change", () => {
@@ -216,7 +302,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const fecha = document.getElementById("fecha").value.trim();
     const hora = document.getElementById("hora").value.trim();
     const descripcion = document.getElementById("descripcion").value.trim();
-    const imagen = inputImagen.files[0] ? URL.createObjectURL(inputImagen.files[0]) : null;
+    const imagen = inputImagen.files[0]
+      ? URL.createObjectURL(inputImagen.files[0])
+      : null;
 
     if (!titulo || !lugar || !fecha || !hora || !descripcion) {
       mensajeForm.textContent = "Por favor, rellena todos los campos.";
@@ -224,21 +312,29 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    alertas.push({ titulo, lugar, fecha, hora, descripcion, estado: "En proceso", imagen });
+    alertas.push({
+      titulo,
+      lugar,
+      fecha,
+      hora,
+      descripcion,
+      estado: "En proceso",
+      imagen,
+    });
     renderAlertas();
     mensajeForm.textContent = "¡Alerta guardada correctamente!";
     mensajeForm.style.color = "green";
     formAlerta.reset();
     previewImagen.style.display = "none";
 
-    setTimeout(() => { modal.style.display = "none"; }, 1000);
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 1000);
   });
-
 
   // ====================================
   // COMUNICADOS OFICIALES (DIGESA)
   // ====================================
-
   const btnComunicados = document.getElementById("btnComunicados");
   const modalComunicados = document.getElementById("modalComunicados");
   const closeComunicados = document.getElementById("closeComunicados");
@@ -247,14 +343,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const formComunicado = document.getElementById("formComunicado");
   const mensajeComunicado = document.getElementById("mensajeComunicado");
 
-  const tituloFormComunicado = document.getElementById("tituloFormComunicado");
+  const tituloFormComunicado =
+    document.getElementById("tituloFormComunicado");
 
   const inputTituloCom = document.getElementById("tituloComunicado");
   const inputFechaCom = document.getElementById("fechaComunicado");
   const inputDescripcionCom = document.getElementById("descripcionComunicado");
   const inputEnlaceCom = document.getElementById("enlaceComunicado");
 
-  let comunicados = JSON.parse(localStorage.getItem("comunicadosDigesa") || "[]");
+  let comunicados = JSON.parse(
+    localStorage.getItem("comunicadosDigesa") || "[]"
+  );
   let indiceEditando = null;
 
   // Mostrar modal de comunicados
@@ -297,7 +396,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><b>${c.titulo}</b></p>
         <p><b>Fecha:</b> ${c.fecha}</p>
         <p style="font-size: 13px;">${c.descripcion}</p>
-        ${c.enlace ? `<p style="font-size: 13px;"><a href="${c.enlace}" target="_blank">Ver informe oficial</a></p>` : ""}
+        ${
+          c.enlace
+            ? `<p style="font-size: 13px;"><a href="${c.enlace}" target="_blank">Ver informe oficial</a></p>`
+            : ""
+        }
       `;
 
       const botones = document.createElement("div");
@@ -306,7 +409,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const btnEditar = document.createElement("button");
       btnEditar.textContent = "Editar";
       btnEditar.className = "btn btn-add";
-      btnEditar.addEventListener("click", () => cargarComunicadoEnFormulario(index));
+      btnEditar.addEventListener("click", () =>
+        cargarComunicadoEnFormulario(index)
+      );
 
       const btnEliminar = document.createElement("button");
       btnEliminar.textContent = "Eliminar";
@@ -362,7 +467,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const enlace = inputEnlaceCom.value.trim();
 
     if (!titulo || !fecha || !descripcion) {
-      mensajeComunicado.textContent = "Por favor, completa título, fecha y descripción.";
+      mensajeComunicado.textContent =
+        "Por favor, completa título, fecha y descripción.";
       mensajeComunicado.style.color = "red";
       return;
     }
@@ -371,10 +477,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (indiceEditando !== null) {
       comunicados[indiceEditando] = nuevo;
-      mensajeComunicado.textContent = "Comunicado actualizado correctamente.";
+      mensajeComunicado.textContent =
+        "Comunicado actualizado correctamente.";
     } else {
       comunicados.push(nuevo);
-      mensajeComunicado.textContent = "Comunicado guardado correctamente.";
+      mensajeComunicado.textContent =
+        "Comunicado guardado correctamente.";
     }
 
     mensajeComunicado.style.color = "green";
@@ -386,7 +494,81 @@ document.addEventListener("DOMContentLoaded", () => {
     tituloFormComunicado.textContent = "Nuevo comunicado";
   });
 
+  // ====================================
+  // CONFIGURAR PREFERENCIAS
+  // ====================================
+  const btnConfigPreferencias = document.getElementById(
+    "btnConfigPreferencias"
+  );
+  const modalPreferencias = document.getElementById("modalPreferencias");
+  const closePreferencias = document.getElementById("closePreferencias");
+  const selectTipoAlerta = document.getElementById("selectTipoAlerta");
+  const selectFrecuencia = document.getElementById("selectFrecuencia");
+  const btnGuardarPreferencias = document.getElementById(
+    "btnGuardarPreferencias"
+  );
+  const modalConfirmPreferencias = document.getElementById(
+    "modalConfirmPreferencias"
+  );
+  const btnPrefSi = document.getElementById("btnPrefSi");
+  const btnPrefNo = document.getElementById("btnPrefNo");
+
+  // Abrir modal de preferencias (cargando lo guardado si existe)
+  btnConfigPreferencias?.addEventListener("click", () => {
+    const prefs = JSON.parse(
+      localStorage.getItem("preferenciasAlertas") || "{}"
+    );
+    if (prefs.tipo) selectTipoAlerta.value = prefs.tipo;
+    if (prefs.frecuencia) selectFrecuencia.value = prefs.frecuencia;
+
+    modalPreferencias.style.display = "flex";
+  });
+
+  // Cerrar modal de preferencias
+  closePreferencias?.addEventListener("click", () => {
+    modalPreferencias.style.display = "none";
+  });
+
+  // Abrir confirmación de guardar
+  btnGuardarPreferencias?.addEventListener("click", () => {
+    modalConfirmPreferencias.style.display = "flex";
+  });
+
+  // Confirmar guardado
+  btnPrefSi?.addEventListener("click", () => {
+    const preferencias = {
+      tipo: selectTipoAlerta.value,
+      frecuencia: selectFrecuencia.value,
+    };
+    localStorage.setItem(
+      "preferenciasAlertas",
+      JSON.stringify(preferencias)
+    );
+
+    alert(
+      `✔ Preferencias guardadas.\nTipo: ${preferencias.tipo}\nFrecuencia: ${preferencias.frecuencia}`
+    );
+
+    modalPreferencias.style.display = "none";
+    modalConfirmPreferencias.style.display = "none";
+  });
+
+  // Cancelar guardado
+  btnPrefNo?.addEventListener("click", () => {
+    modalConfirmPreferencias.style.display = "none";
+  });
+
+  // Cerrar modales de preferencias al hacer clic fuera
+  window.addEventListener("click", (e) => {
+    if (e.target === modalPreferencias) {
+      modalPreferencias.style.display = "none";
+    }
+    if (e.target === modalConfirmPreferencias) {
+      modalConfirmPreferencias.style.display = "none";
+    }
+  });
 });
+
 
 
 
