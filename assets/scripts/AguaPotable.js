@@ -1,150 +1,194 @@
-// Mostrar nombre del usuario activo
+// ===============================
+// MENÚ HAMBURGUESA + PERFIL
+// ===============================
+const hamburger = document.getElementById("hamburger");
+const nav = document.querySelector(".nav");
+const registrarBtn = document.querySelector(".btn-registrarse");
+const iniciarSesionBtn = document.querySelector(".btn-iniciarSesion");
+
+if (hamburger) {
+  hamburger.addEventListener("click", () => {
+    nav?.classList.toggle("nav-active");
+    registrarBtn?.classList.toggle("nav-active");
+    iniciarSesionBtn?.classList.toggle("nav-active");
+
+    hamburger.classList.toggle("open");
+    if (hamburger.classList.contains("open")) {
+      hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    } else {
+      hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Manejo de sesión en header/footer
   const nombreActivo = localStorage.getItem("usuarioActivo");
+  const authButtons = document.getElementById("auth-buttons");
+  const profileButton = document.getElementById("profile-button");
 
   if (nombreActivo) {
-    document.getElementById("auth-buttons").style.display = "none";
-    const profileButton = document.getElementById("profile-button");
-    profileButton.style.display = "block";
-    document.getElementById("btnPerfil").textContent = nombreActivo;
+    if (authButtons) authButtons.style.display = "none";
+    if (profileButton) profileButton.style.display = "block";
 
     const btnPerfil = document.getElementById("btnPerfil");
+    if (btnPerfil) btnPerfil.textContent = nombreActivo;
+
     const profileMenu = document.getElementById("profile-menu");
-    btnPerfil.addEventListener("click", () => {
-      profileMenu.classList.toggle("show");
+    btnPerfil?.addEventListener("click", () => {
+      profileMenu?.classList.toggle("show");
     });
 
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
+    document.getElementById("cerrarSesion")?.addEventListener("click", (e) => {
+      e.preventDefault();
       localStorage.removeItem("usuarioActivo");
       window.location.href = "index.html";
     });
 
-    // Footer dinámico
     const footerUserSection = document.getElementById("footer-user-section");
-    footerUserSection.innerHTML = `
+    if (footerUserSection) {
+      footerUserSection.innerHTML = `
         <h4 class="active">Perfil de ${nombreActivo}</h4>
         <ul>
           <li><a href="Perfil.html">Ver Perfil</a></li>
           <li><a href="#" id="cerrarSesionFooter">Cerrar Sesión</a></li>
         </ul>
       `;
-    document
-      .getElementById("cerrarSesionFooter")
-      .addEventListener("click", (e) => {
-        e.preventDefault();
-        localStorage.removeItem("usuarioActivo");
-        window.location.href = "index.html";
-      });
+      document
+        .getElementById("cerrarSesionFooter")
+        ?.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("usuarioActivo");
+          window.location.href = "index.html";
+        });
+    }
   }
 
-  // Botón volver
-  document
-    .getElementById("btnAtras")
-    .addEventListener("click", () => window.history.back());
-});
-
-// Inicializar mapa
-const map = L.map("map").setView([-12.0464, -77.0428], 12);
-
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap contributors",
-}).addTo(map);
-
-const iconoAgua = L.icon({
-  iconUrl: "https://img.icons8.com/ios/100/000000/water.png",
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-  popupAnchor: [0, -40],
-});
-
-// Datos de puntos de agua potable
-const puntos = [
-  { lat: -12.042, lng: -77.03, direccion: "Av. Petit Thouars 1200" },
-  { lat: -12.05, lng: -77.04, direccion: "Parque Kennedy, Miraflores" },
-  { lat: -12.06, lng: -77.02, direccion: "Av. Grau 890" },
-  { lat: -12.07, lng: -77.06, direccion: "Plaza San Miguel" },
-];
-
-puntos.forEach((p, i) => {
-  p.tiempo = Math.floor(Math.random() * 60) + 30;
-  p.marcador = L.marker([p.lat, p.lng], { icon: iconoAgua }).addTo(map);
-  p.marcador.bindPopup(crearPopupHTML(p, i), { minWidth: 280 });
-});
-
-function crearPopupHTML(p, i) {
-  const horaActual = new Date();
-  const horaLimite = new Date(horaActual.getTime() + p.tiempo * 1000);
-  const horaFormateada = horaLimite.toLocaleTimeString("es-PE", {
-    hour: "2-digit",
-    minute: "2-digit",
+  // ===============================
+  // BOTÓN VOLVER ATRÁS
+  // ===============================
+  const btnAtras = document.getElementById("btnAtras");
+  btnAtras?.addEventListener("click", () => {
+    window.history.back();
   });
 
-  return `
-      <div style="font-family: Poppins, sans-serif; text-align: center;">
-        <h3 style="margin: 5px 0; color: #004aad;">Punto de Agua Potable</h3>
-        <hr style="border: none; border-top: 1px solid #ccc; margin: 6px 0;">
-        <p style="margin: 3px 0;"><b>Ubicación:</b> ${p.direccion}</p>
-        <p style="margin: 3px 0;"><b>Estado:</b> <span id="estado${i}" style="color: green;">Disponible</span></p>
-        <p style="margin: 3px 0;"><b>Tiempo restante:</b> <span id="tiempo${i}">${
-    p.tiempo
-  }</span> seg</p>
-        <p style="margin: 3px 0;"><b>Disponible hasta:</b> ${horaFormateada}</p>
-        <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          p.direccion
-        )}','_blank')" 
-          style="margin-top: 6px; background-color:#004aad; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">
-          Ver en Google Maps
-        </button>
-      </div>
-    `;
-}
+  // ===============================
+  // MAPA DE PUNTOS DE AGUA POTABLE
+  // (historia: técnico SUNASS ve zonas por color de riesgo)
+  // ===============================
 
-// Actualizar estado dinámico
-setInterval(() => {
-  puntos.forEach((p, i) => {
-    p.tiempo--;
-    const tiempoElem = document.getElementById(`tiempo${i}`);
-    const estadoElem = document.getElementById(`estado${i}`);
+  // 1. Inicializar mapa centrado en Lima
+  const map = L.map("map").setView([-12.0464, -77.0428], 11);
 
-    if (tiempoElem) tiempoElem.textContent = p.tiempo;
+  // 2. Capa base (puedes cambiar el estilo si quieres)
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: "© OpenStreetMap contributors",
+  }).addTo(map);
 
-    if (p.tiempo <= 15) {
-      if (estadoElem) {
-        estadoElem.textContent = "Por terminar";
-        estadoElem.style.color = "red";
-      }
-    } else {
-      if (estadoElem) {
-        estadoElem.textContent = "Disponible";
-        estadoElem.style.color = "green";
-      }
+  // 3. Función para obtener color según nivel de riesgo
+  function colorPorRiesgo(riesgo) {
+    switch (riesgo) {
+      case "alto":
+        return "#e53935"; // rojo
+      case "medio":
+        return "#fb8c00"; // naranja
+      case "bajo":
+        return "#43a047"; // verde
+      default:
+        return "#757575"; // gris
     }
-
-    if (p.tiempo <= 0) p.tiempo = Math.floor(Math.random() * 90) + 30;
-
-    if (p.marcador.isPopupOpen()) {
-      p.marcador.setPopupContent(crearPopupHTML(p, i));
-    }
-  });
-}, 1000);
-
-// ----- MENÚ HAMBURGUESA -----
-const hamburger = document.getElementById("hamburger");
-const nav = document.querySelector(".nav");
-const registrarBtn = document.querySelector(".btn-registrarse");
-const iniciarSesionBtn = document.querySelector(".btn-iniciarSesion");
-
-hamburger.addEventListener("click", () => {
-  // Alternar visibilidad del menú
-  nav.classList.toggle("nav-active");
-  registrarBtn.classList.toggle("nav-active");
-  iniciarSesionBtn.classList.toggle("nav-active");
-
-  // Cambiar ícono del menú)
-  hamburger.classList.toggle("open");
-  if (hamburger.classList.contains("open")) {
-    hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-  } else {
-    hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
+
+  // 4. Puntos de monitoreo ficticios (ejemplo)
+  //    Puedes luego reemplazar coordenadas y datos por info real o de la BD.
+  const puntosAgua = [
+    {
+      nombre: "Punto SJL - Z1",
+      distrito: "San Juan de Lurigancho",
+      riesgo: "alto",
+      cloro: "0.1 mg/L",
+      bacterias: "15 NMP/100 mL",
+      descripcion: "Incidencias recientes de contaminación microbiológica.",
+      coords: [-12.0, -76.98],
+    },
+    {
+      nombre: "Punto Comas - Z2",
+      distrito: "Comas",
+      riesgo: "medio",
+      cloro: "0.25 mg/L",
+      bacterias: "2 NMP/100 mL",
+      descripcion:
+        "Se recomienda seguimiento. Leve presencia de bacterias y cloro cercano al mínimo.",
+      coords: [-11.95, -77.06],
+    },
+    {
+      nombre: "Punto SMP - Z3",
+      distrito: "San Martín de Porres",
+      riesgo: "bajo",
+      cloro: "0.5 mg/L",
+      bacterias: "0 NMP/100 mL",
+      descripcion: "Dentro de parámetros adecuados, monitoreo rutinario.",
+      coords: [-12.01, -77.09],
+    },
+    {
+      nombre: "Punto VES - Z4",
+      distrito: "Villa El Salvador",
+      riesgo: "bajo",
+      cloro: "0.45 mg/L",
+      bacterias: "0 NMP/100 mL",
+      descripcion: "Zona estable, sin reportes recientes.",
+      coords: [-12.2, -76.94],
+    },
+  ];
+
+  // 5. Pintar los puntos en el mapa como círculos codificados por color
+  puntosAgua.forEach((p) => {
+    const color = colorPorRiesgo(p.riesgo);
+
+    const marker = L.circleMarker(p.coords, {
+      radius: 10,
+      color,
+      weight: 2,
+      fillColor: color,
+      fillOpacity: 0.6,
+    }).addTo(map);
+
+    marker.bindPopup(
+      `
+      <b>${p.nombre}</b><br/>
+      <b>Distrito:</b> ${p.distrito}<br/>
+      <b>Nivel de riesgo:</b> <span style="color:${color}; text-transform:uppercase;">${p.riesgo}</span><br/>
+      <b>Cloro:</b> ${p.cloro}<br/>
+      <b>Bacterias:</b> ${p.bacterias}<br/>
+      <small>${p.descripcion}</small>
+    `
+    );
+  });
+
+  // 6. Leyenda de colores (bajo / medio / alto)
+  const legend = L.control({ position: "bottomright" });
+
+  legend.onAdd = function () {
+    const div = L.DomUtil.create("div", "map-legend");
+    const niveles = [
+      { label: "Riesgo bajo", color: colorPorRiesgo("bajo") },
+      { label: "Riesgo medio", color: colorPorRiesgo("medio") },
+      { label: "Riesgo alto", color: colorPorRiesgo("alto") },
+    ];
+
+    div.innerHTML = "<h4>Nivel de riesgo</h4>";
+    niveles.forEach((n) => {
+      div.innerHTML += `
+        <div class="legend-item">
+          <span class="legend-color" style="background:${n.color}"></span>
+          <span>${n.label}</span>
+        </div>
+      `;
+    });
+
+    return div;
+  };
+
+  legend.addTo(map);
 });
