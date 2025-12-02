@@ -195,5 +195,4 @@ document.addEventListener("DOMContentLoaded", () => {
   map.fitBounds(group.getBounds().pad(0.3));
 });
 
-});
 
