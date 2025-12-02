@@ -50,6 +50,37 @@ main {
   font-size: 20px;
 }
 
+/* ==============================
+   SELECT DE TIPO DE ABASTECIMIENTO
+   ============================== */
+
+.register-form select {
+  margin: 8px 0;
+  padding: 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  width: 100%;
+  background: #ffffff;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  /* quitar estilos nativos feos de algunos navegadores */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* label encima del select */
+.label-abastecimiento {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: bold;
+  display: block;
+}
+
 .register-form button {
   background-color: white;
   font-weight: bold;
@@ -117,7 +148,8 @@ main {
     max-width: 400px;
   }
 
-  .register-form input {
+  .register-form input,
+  .register-form select {
     padding: 16px;
     font-size: 18px;
   }
@@ -154,7 +186,8 @@ main {
     width: 100%;
   }
 
-  .register-form input {
+  .register-form input,
+  .register-form select {
     padding: 14px;
     font-size: 16px;
   }
@@ -169,36 +202,9 @@ main {
     font-size: 13px;
   }
 
-.register-form select {
-  margin: 8px 0;
-  padding: 18px;
-  border: none;
-  border-radius: 6px;
-  font-size: 20px;
-  background: #ffffff;
-  cursor: pointer;
-}
-
-/* Estilo del label */
-.label-abastecimiento {
-  margin-top: 12px;
-  margin-bottom: 5px;
-  font-size: 18px;
-  color: white;
-  font-weight: bold;
-  display: block;
-}
-
-@media (max-width: 480px) {
-  .register-form select {
-    padding: 14px;
-    font-size: 16px;
-  }
-
   .label-abastecimiento {
     font-size: 16px;
   }
 }
 
-}
 
