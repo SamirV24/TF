@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro - AquaAlert</title>
-    <link rel="icon" href="assets\images\AquaAlert.jpg" type="image/png" />
-    <link rel="stylesheet" href="assets\styles\Registro.css" />
-    <link rel="stylesheet" href="assets\styles\global.css" />
-    <link rel="stylesheet" href="assets\styles\Hamburguesa.css" />
+    <link rel="icon" href="assets/images/AquaAlert.jpg" type="image/png" />
+    <link rel="stylesheet" href="assets/styles/Registro.css" />
+    <link rel="stylesheet" href="assets/styles/global.css" />
+    <link rel="stylesheet" href="assets/styles/Hamburguesa.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -17,7 +17,7 @@
     <header class="header">
       <div class="logo">
         <a href="index.html">
-          <img src="assets\images\AquaAlert.jpg" alt="Logo AquaAlert" />
+          <img src="assets/images/AquaAlert.jpg" alt="Logo AquaAlert" />
         </a>
       </div>
 
@@ -41,7 +41,7 @@
       <div class="register-container">
         <div class="register-header">
           <img
-            src="assets\images\AquaAlertLogo.png"
+            src="assets/images/AquaAlertLogo.png"
             alt="Logo AquaAlert"
             class="logo"
           />
@@ -54,6 +54,20 @@
           <input type="text" placeholder="Nombre" required />
           <input type="email" placeholder="Correo" required />
           <input type="tel" placeholder="Número" required />
+
+          <!-- NUEVO: Tipo de abastecimiento (obligatorio) -->
+          <label for="tipoAbastecimiento" class="label-abastecimiento"
+            >Tipo de abastecimiento de agua en tu hogar</label
+          >
+          <select id="tipoAbastecimiento" required>
+            <option value="" disabled selected>
+              Selecciona tu tipo de abastecimiento
+            </option>
+            <option value="red">Red pública</option>
+            <option value="cisterna">Cisterna</option>
+            <option value="pozo">Pozo</option>
+          </select>
+
           <button type="submit">Crear Cuenta</button>
         </form>
 
