@@ -187,110 +187,152 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ====================================
+  // REVISIÓN TÉCNICA DE ALERTAS (NUEVO)
+  // ====================================
+  const modalRevisionTecnica = document.getElementById("modalRevisionTecnica");
+  const closeRevisionTecnica = document.getElementById("closeRevisionTecnica");
+  const formRevisionTecnica = document.getElementById("formRevisionTecnica");
+  const tituloAlertaTecnica = document.getElementById("tituloAlertaTecnica");
+  const selectResultadoTecnico = document.getElementById("selectResultadoTecnico");
+  const comentarioTecnicoInput = document.getElementById("comentarioTecnico");
+  let alertaSeleccionada = null;
+
+  // ====================================
   // ALERTAS + IMAGEN
   // ====================================
   let alertas = [
-  {
-    titulo: "Niveles bajos de cloro residual",
-    lugar: "San Juan de Lurigancho",
-    fecha: "05/10/2025",
-    hora: "07:45 a.m.",
-    descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
-    estado: "En proceso",
-    imagen: null,
-    cloro: 0.1,       // mg/L
-    bacterias: 5      // NMP/100 mL
-  },
-  {
-    titulo: "Corte programado de servicio",
-    lugar: "Villa El Salvador",
-    fecha: "05/10/2025",
-    hora: "10:00 a.m. - 8:00 p.m.",
-    descripcion: "Corte por mantenimiento.",
-    estado: "Terminado",
-    imagen: null,
-    cloro: 0.4,
-    bacterias: 0
-  },
-  {
-    titulo: "Presencia de turbidez visible",
-    lugar: "Comas",
-    fecha: "06/10/2025",
-    hora: "04:30 p.m.",
-    descripcion: "Evita consumir directamente.",
-    estado: "Solucionado",
-    imagen: null,
-    cloro: 0.3,
-    bacterias: 10
-  },
-];
+    {
+      titulo: "Niveles bajos de cloro residual",
+      lugar: "San Juan de Lurigancho",
+      fecha: "05/10/2025",
+      hora: "07:45 a.m.",
+      descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
+      estado: "En proceso",
+      imagen: null,
+      cloro: 0.1,       // mg/L
+      bacterias: 5,     // NMP/100 mL
+      comentarioTecnico: ""
+    },
+    {
+      titulo: "Corte programado de servicio",
+      lugar: "Villa El Salvador",
+      fecha: "05/10/2025",
+      hora: "10:00 a.m. - 8:00 p.m.",
+      descripcion: "Corte por mantenimiento.",
+      estado: "Terminado",
+      imagen: null,
+      cloro: 0.4,
+      bacterias: 0,
+      comentarioTecnico: ""
+    },
+    {
+      titulo: "Presencia de turbidez visible",
+      lugar: "Comas",
+      fecha: "06/10/2025",
+      hora: "04:30 p.m.",
+      descripcion: "Evita consumir directamente.",
+      estado: "Solucionado",
+      imagen: null,
+      cloro: 0.3,
+      bacterias: 10,
+      comentarioTecnico: ""
+    },
+  ];
   
-function interpretarCalidadAgua(cloro, bacterias) {
-  // Ejemplo simple, puedes ajustar rangos si tu profe te da otros
-  if (bacterias > 0) {
+  function interpretarCalidadAgua(cloro, bacterias) {
+    // Ejemplo simple, puedes ajustar rangos si tu profe te da otros
+    if (bacterias > 0) {
+      return {
+        texto: "⛔ No apta para consumo (bacterias detectadas)",
+        clase: "calidad-roja"
+      };
+    }
+
+    if (cloro < 0.2) {
+      return {
+        texto: "⚠ Bajo nivel de cloro. Se recomienda hervir el agua.",
+        clase: "calidad-amarilla"
+      };
+    }
+
+    if (cloro > 0.8) {
+      return {
+        texto: "⚠ Cloro elevado. Puede alterar sabor u olor.",
+        clase: "calidad-amarilla"
+      };
+    }
+
     return {
-      texto: "⛔ No apta para consumo (bacterias detectadas)",
-      clase: "calidad-roja"
+      texto: "✅ Agua dentro de parámetros seguros.",
+      clase: "calidad-verde"
     };
   }
-
-  if (cloro < 0.2) {
-    return {
-      texto: "⚠ Bajo nivel de cloro. Se recomienda hervir el agua.",
-      clase: "calidad-amarilla"
-    };
-  }
-
-  if (cloro > 0.8) {
-    return {
-      texto: "⚠ Cloro elevado. Puede alterar sabor u olor.",
-      clase: "calidad-amarilla"
-    };
-  }
-
-  return {
-    texto: "✅ Agua dentro de parámetros seguros.",
-    clase: "calidad-verde"
-  };
-}
 
   function renderAlertas() {
     listaAlertas.innerHTML = "";
-    alertas.forEach((a) => {
+    alertas.forEach((a, index) => {
       const div = document.createElement("div");
       div.className = "alerta-card";
 
       const interprete = interpretarCalidadAgua(a.cloro, a.bacterias);
       
-          div.innerHTML = `
-      <div class="alerta-info">
-        <i class="fa-regular fa-bell"></i>
-        <div class="alerta-text">
-          <p><b>Alerta:</b> ${a.titulo}</p>
-          <p><b>Lugar:</b> <span class="alerta-lugar">${a.lugar}</span></p>
-          <p><b>Fecha:</b> ${a.fecha}</p>
-          <p><b>Hora:</b> ${a.hora}</p>
-          ${a.imagen ? `<img src="${a.imagen}" class="alerta-img" />` : ""}
+      div.innerHTML = `
+        <div class="alerta-info">
+          <i class="fa-regular fa-bell"></i>
+          <div class="alerta-text">
+            <p><b>Alerta:</b> ${a.titulo}</p>
+            <p><b>Lugar:</b> <span class="alerta-lugar">${a.lugar}</span></p>
+            <p><b>Fecha:</b> ${a.fecha}</p>
+            <p><b>Hora:</b> ${a.hora}</p>
+            ${a.imagen ? `<img src="${a.imagen}" class="alerta-img" />` : ""}
 
-          <!-- NUEVO: datos técnicos resumidos -->
-          <p class="datos-tecnicos">
-            Cloro: <b>${a.cloro} mg/L</b> · Bacterias: <b>${a.bacterias} NMP/100 mL</b>
-          </p>
+            <!-- NUEVO: datos técnicos resumidos -->
+            <p class="datos-tecnicos">
+              Cloro: <b>${a.cloro} mg/L</b> · Bacterias: <b>${a.bacterias} NMP/100 mL</b>
+            </p>
 
-          <!-- NUEVO: frase simple con color -->
-          <p class="chip-calidad ${interprete.clase}">
-            ${interprete.texto}
-          </p>
+            <!-- NUEVO: frase simple con color -->
+            <p class="chip-calidad ${interprete.clase}">
+              ${interprete.texto}
+            </p>
 
-          <p><b>Estado:</b> <span class="estado ${a.estado.replace(" ", "-").toLowerCase()}">${a.estado}</span></p>
+            <p><b>Estado:</b> 
+              <span class="estado ${a.estado.replace(" ", "-").toLowerCase()}">
+                ${a.estado}
+              </span>
+            </p>
+
+            ${
+              a.comentarioTecnico
+                ? `<p class="comentario-tecnico"><b>Comentario técnico:</b> ${a.comentarioTecnico}</p>`
+                : ""
+            }
+
+            <button class="btn btn-add btn-revision-tecnica" data-index="${index}">
+              Revisión técnica
+            </button>
+          </div>
         </div>
-      </div>
-      <i class="fa-solid fa-arrow-right"></i>
-    `;
+        <i class="fa-solid fa-arrow-right"></i>
+      `;
 
-
+      // Click en la tarjeta -> detalles generales
       div.addEventListener("click", () => {
-        alert(`Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${a.fecha}\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${a.descripcion}`);
+        alert(
+          `Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${a.fecha}\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${a.descripcion}`
+        );
+      });
+
+      // Click en botón Revisión técnica (no dispara el alert anterior)
+      const btnRevision = div.querySelector(".btn-revision-tecnica");
+      btnRevision.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        alertaSeleccionada = index;
+        tituloAlertaTecnica.textContent = `Alerta: ${a.titulo} - ${a.lugar}`;
+        selectResultadoTecnico.value =
+          a.estado === "Descartada" ? "Descartada" : "Confirmada";
+        comentarioTecnicoInput.value = a.comentarioTecnico || "";
+        modalRevisionTecnica.style.display = "flex";
       });
 
       listaAlertas.appendChild(div);
@@ -298,6 +340,35 @@ function interpretarCalidadAgua(cloro, bacterias) {
   }
 
   renderAlertas();
+
+  // Cerrar modal de revisión técnica
+  closeRevisionTecnica?.addEventListener("click", () => {
+    modalRevisionTecnica.style.display = "none";
+  });
+
+  // Cerrar modal al hacer clic fuera
+  window.addEventListener("click", (e) => {
+    if (e.target === modalRevisionTecnica) {
+      modalRevisionTecnica.style.display = "none";
+    }
+  });
+
+  // Guardar revisión técnica
+  formRevisionTecnica?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (alertaSeleccionada === null) return;
+
+    const resultado = selectResultadoTecnico.value;
+    const comentario = comentarioTecnicoInput.value.trim();
+
+    alertas[alertaSeleccionada].estado = resultado;
+    alertas[alertaSeleccionada].comentarioTecnico = comentario;
+
+    renderAlertas();
+    modalRevisionTecnica.style.display = "none";
+
+    alert("✅ Revisión técnica guardada para esta alerta.");
+  });
 
   // ====================================
   // AGREGAR NUEVA ALERTA
@@ -367,6 +438,9 @@ function interpretarCalidadAgua(cloro, bacterias) {
       descripcion,
       estado: "En proceso",
       imagen,
+      cloro: 0.4,          // valor por defecto
+      bacterias: 0,        // valor por defecto
+      comentarioTecnico: "" // aún no revisada
     });
 
     renderAlertas();
@@ -642,7 +716,7 @@ function interpretarCalidadAgua(cloro, bacterias) {
     }
   });
 
-    // ====================================
+  // ====================================
   // INSIGNIAS POR PARTICIPACIÓN
   // ====================================
   const btnReportarInfo = document.getElementById("btnReportarInfo");
@@ -692,11 +766,4 @@ function interpretarCalidadAgua(cloro, bacterias) {
       );
     }
   });
-  });
-
-
-
-
-
-
-
+});
