@@ -1,3 +1,51 @@
+/* ============================
+   COLORES POR CATEGORÍA
+============================ */
+
+/* LEVE (VERDE) */
+.alerta-leve {
+  border-left: 6px solid #27ae60;
+  background-color: rgba(39, 174, 96, 0.1);
+}
+
+.alerta-leve .alerta-categoria {
+  background: #27ae60;
+  color: white;
+}
+
+/* MODERADA (AMARILLO) */
+.alerta-moderada {
+  border-left: 6px solid #f1c40f;
+  background-color: rgba(241, 196, 15, 0.1);
+}
+
+.alerta-moderada .alerta-categoria {
+  background: #f1c40f;
+  color: #333;
+}
+
+/* CRÍTICA (ROJO) */
+.alerta-critica {
+  border-left: 6px solid #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+.alerta-critica .alerta-categoria {
+  background: #e74c3c;
+  color: white;
+}
+
+/* Badge general */
+.alerta-categoria {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+
 /* Tarjeta base de alerta */
 .alert-card {
   border-radius: 10px;
@@ -600,6 +648,7 @@ h1 {
   margin-top: 10px;
   display: block;
 }
+
 
 
 
