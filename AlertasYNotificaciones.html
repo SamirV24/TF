@@ -71,14 +71,17 @@
       </select>
 
       <div class="btns">
-        <button class="btn btn-add" id="btnNotificaciones">Recibir Notificaciones</button>
-        <button class="btn btn-add" id="btnRecomendacion">Recomendación del Día</button>
-        <button class="btn btn-add" id="btnNotifPersonalizadas">Notificaciones Personalizadas</button>
-        <button class="btn btn-add" id="btnConfigPreferencias">Configurar Preferencias</button>
-        <button class="btn btn-add" id="btnEncuestas">Recibir encuestas</button>
-        <button class="btn btn-add" id="btnSeguridadAgua">Ver seguridad del agua</button>
-        <button class="btn btn-add" id="btnComunicados">Comunicados</button>
-      </div>
+  <button class="btn btn-add" id="btnNotificaciones">Recibir Notificaciones</button>
+  <button class="btn btn-add" id="btnRecomendacion">Recomendación del Día</button>
+  <button class="btn btn-add" id="btnNotifPersonalizadas">Notificaciones Personalizadas</button>
+  <button class="btn btn-add" id="btnConfigPreferencias">Configurar Preferencias</button>
+  <button class="btn btn-add" id="btnSeguridadAgua">Ver seguridad del agua</button>
+  <button class="btn btn-add" id="btnComunicados">Comunicados</button>
+  <button class="btn btn-add" id="btnEncuestas">
+    Recibir encuestas sobre el servicio
+  </button>
+</div>
+
 
       <div class="btns">
         <button class="btn btn-add" id="btnAddAlerta">+ Añadir Alerta</button>
@@ -263,19 +266,18 @@
 <div id="modalEncuestas" class="modal">
   <div class="modal-card">
     <span class="close" id="closeEncuestas">&times;</span>
-
-    <h2>Encuestas sobre el servicio de agua</h2>
+    <h2>¿Quieres recibir encuestas sobre el servicio de agua?</h2>
     <p>
-      ¿Deseas recibir encuestas al celular o al correo para compartir tu opinión
-      sobre la calidad del agua y los servicios recibidos?
+      Podemos enviarte encuestas breves a tu correo o celular para conocer tu opinión
+      sobre la calidad del agua y el servicio en tu zona.
     </p>
-
     <div style="display:flex; gap:1rem; justify-content:center; margin-top:20px;">
-      <button id="btnEncuestaSi" class="btn-choice btn-si">Sí</button>
-      <button id="btnEncuestaNo" class="btn-choice btn-no">No</button>
+      <button id="btnEncuestaSi" class="btn-choice btn-si">Sí, quiero participar</button>
+      <button id="btnEncuestaNo" class="btn-choice btn-no">No por ahora</button>
     </div>
   </div>
 </div>
+
 
 
         <!-- LISTA DE COMUNICADOS -->
@@ -372,6 +374,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
