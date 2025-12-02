@@ -62,9 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       tituloEstadoIncidencia.textContent = `Alerta: ${a.titulo} - ${a.lugar}`;
       selectEstadoIncidencia.value = a.estado;
-      inputResponsable.value = a.responsable && a.responsable !== "No asignado"
-        ? a.responsable
-        : "";
+      inputResponsable.value =
+        a.responsable && a.responsable !== "No asignado" ? a.responsable : "";
 
       modalEstado.style.display = "flex";
     }
@@ -196,12 +195,12 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     // agrupar alertas por distrito
     const resumen = {};
 
-    alertas.forEach(a => {
+    alertas.forEach((a) => {
       if (!resumen[a.lugar]) {
         resumen[a.lugar] = {
           cantidad: 0,
           cloroTotal: 0,
-          bacteriasTotal: 0
+          bacteriasTotal: 0,
         };
       }
 
@@ -211,8 +210,12 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     });
 
     const labels = Object.keys(resumen);
-    const datosCloro = labels.map(d => (resumen[d].cloroTotal / resumen[d].cantidad).toFixed(2));
-    const datosBacterias = labels.map(d => (resumen[d].bacteriasTotal / resumen[d].cantidad).toFixed(2));
+    const datosCloro = labels.map((d) =>
+      (resumen[d].cloroTotal / resumen[d].cantidad).toFixed(2)
+    );
+    const datosBacterias = labels.map((d) =>
+      (resumen[d].bacteriasTotal / resumen[d].cantidad).toFixed(2)
+    );
 
     // Si ya existe gráfico, destruirlo antes de crear otro
     if (grafico) grafico.destroy();
@@ -225,25 +228,27 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
           {
             label: "Promedio de cloro (mg/L)",
             data: datosCloro,
-            backgroundColor: "rgba(54, 162, 235, 0.7)"
+            backgroundColor: "rgba(54, 162, 235, 0.7)",
           },
           {
             label: "Promedio de bacterias (NMP/100ml)",
             data: datosBacterias,
-            backgroundColor: "rgba(255, 99, 132, 0.7)"
-          }
-        ]
-      }
+            backgroundColor: "rgba(255, 99, 132, 0.7)",
+          },
+        ],
+      },
     });
 
     // Generar estadísticas detalladas
     estadisticasDistritos.innerHTML = labels
-      .map(d => `
+      .map(
+        (d, i) => `
       <p><b>${d}</b> — ${resumen[d].cantidad} alertas  
-        | Cloro promedio: ${datosCloro[labels.indexOf(d)]} mg/L  
-        | Bacterias promedio: ${datosBacterias[labels.indexOf(d)]} NMP/100ml
+        | Cloro promedio: ${datosCloro[i]} mg/L  
+        | Bacterias promedio: ${datosBacterias[i]} NMP/100ml
       </p>
-    `)
+    `
+      )
       .join("");
   }
 
@@ -267,7 +272,7 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     let y = 130;
     const texto = estadisticasDistritos.innerText.split("\n");
 
-    texto.forEach(linea => {
+    texto.forEach((linea) => {
       pdf.text(linea, 10, y);
       y += 8;
     });
@@ -278,13 +283,23 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
   // ====================================
   // NOTIFICACIONES PERSONALIZADAS
   // ====================================
-  const btnNotifPersonalizadas = document.getElementById("btnNotifPersonalizadas");
-  const modalNotifPersonalizadas = document.getElementById("modalNotifPersonalizadas");
-  const closeNotifPersonalizadas = document.getElementById("closeNotifPersonalizaciones");
+  const btnNotifPersonalizadas = document.getElementById(
+    "btnNotifPersonalizadas"
+  );
+  const modalNotifPersonalizadas = document.getElementById(
+    "modalNotifPersonalizadas"
+  );
+  const closeNotifPersonalizadas = document.getElementById(
+    "closeNotifPersonalizaciones"
+  );
   const btnConfirmarNotif = document.getElementById("btnConfirmarNotif");
   const selectDistritoNotif = document.getElementById("selectDistritoNotif");
-  const modalConfirmacionNotif = document.getElementById("modalConfirmacionNotif");
-  const closeConfirmacionNotif = document.getElementById("closeConfirmacionNotif");
+  const modalConfirmacionNotif = document.getElementById(
+    "modalConfirmacionNotif"
+  );
+  const closeConfirmacionNotif = document.getElementById(
+    "closeConfirmacionNotif"
+  );
   const btnConfirmarSi = document.getElementById("btnConfirmarSi");
   const btnConfirmarNo = document.getElementById("btnConfirmarNo");
 
@@ -310,7 +325,9 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
 
   btnConfirmarSi?.addEventListener("click", () => {
     const distrito = selectDistritoNotif.value;
-    alert(`✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`);
+    alert(
+      `✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`
+    );
     modalNotifPersonalizadas.style.display = "none";
     modalConfirmacionNotif.style.display = "none";
   });
@@ -357,8 +374,7 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
   });
 
   window.addEventListener("click", (e) => {
-    if (e.target === modalRecomendacion)
-      modalRecomendacion.style.display = "none";
+    if (e.target === modalRecomendacion) modalRecomendacion.style.display = "none";
   });
 
   // ====================================
@@ -412,11 +428,13 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
           <li><a href="#" id="cerrarSesionFooter">Cerrar Sesión</a></li>
         </ul>
       `;
-      document.getElementById("cerrarSesionFooter")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        localStorage.removeItem("usuarioActivo");
-        window.location.href = "index.html";
-      });
+      document
+        .getElementById("cerrarSesionFooter")
+        ?.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("usuarioActivo");
+          window.location.href = "index.html";
+        });
     }
   }
 
@@ -427,64 +445,65 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
   const closeRevisionTecnica = document.getElementById("closeRevisionTecnica");
   const formRevisionTecnica = document.getElementById("formRevisionTecnica");
   const tituloAlertaTecnica = document.getElementById("tituloAlertaTecnica");
-  const selectResultadoTecnico = document.getElementById("selectResultadoTecnico");
+  const selectResultadoTecnico = document.getElementById(
+    "selectResultadoTecnico"
+  );
   const comentarioTecnicoInput = document.getElementById("comentarioTecnico");
   let alertaSeleccionada = null;
 
   // ====================================
-  // ALERTAS + IMAGEN
+  // ALERTAS + IMAGEN (CON CATEGORÍA)
   // ====================================
   let alertas = [
-  {
-    titulo: "Niveles bajos de cloro residual",
-    lugar: "San Juan de Lurigancho",
-    fecha: "05/10/2025",
-    hora: "07:45 a.m.",
-    descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
-    estado: "En proceso",
-    imagen: null,
-    cloro: 0.1,
-    bacterias: 5,
-    comentarioTecnico: "",
-    resultadoTecnico: "Pendiente",
-    responsable: "No asignado",
-    fechaActualizacion: "05/10/2025 08:00 a.m.",
-    categoria: "critica"  
-  },
-  {
-    titulo: "Corte programado de servicio",
-    lugar: "Villa El Salvador",
-    fecha: "05/10/2025",
-    hora: "10:00 a.m. - 8:00 p.m.",
-    descripcion: "Corte por mantenimiento.",
-    estado: "Terminado",
-    imagen: null,
-    cloro: 0.4,
-    bacterias: 0,
-    comentarioTecnico: "",
-    resultadoTecnico: "Pendiente",
-    responsable: "Área de Operaciones",
-    fechaActualizacion: "05/10/2025 09:30 a.m.",
-    categoria: "moderada"  
-  },
-  {
-    titulo: "Presencia de turbidez visible",
-    lugar: "Comas",
-    fecha: "06/10/2025",
-    hora: "04:30 p.m.",
-    descripcion: "Evita consumir directamente.",
-    estado: "Solucionado",
-    imagen: null,
-    cloro: 0.3,
-    bacterias: 10,
-    comentarioTecnico: "",
-    resultadoTecnico: "Pendiente",
-    responsable: "Equipo de Calidad",
-    fechaActualizacion: "06/10/2025 05:00 p.m.",
-    categoria: "critica"  
-  },
-];
-
+    {
+      titulo: "Niveles bajos de cloro residual",
+      lugar: "San Juan de Lurigancho",
+      fecha: "05/10/2025",
+      hora: "07:45 a.m.",
+      descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
+      estado: "En proceso",
+      imagen: null,
+      cloro: 0.1,
+      bacterias: 5,
+      comentarioTecnico: "",
+      resultadoTecnico: "Pendiente",
+      responsable: "No asignado",
+      fechaActualizacion: "05/10/2025 08:00 a.m.",
+      categoria: "critica",
+    },
+    {
+      titulo: "Corte programado de servicio",
+      lugar: "Villa El Salvador",
+      fecha: "05/10/2025",
+      hora: "10:00 a.m. - 8:00 p.m.",
+      descripcion: "Corte por mantenimiento.",
+      estado: "Terminado",
+      imagen: null,
+      cloro: 0.4,
+      bacterias: 0,
+      comentarioTecnico: "",
+      resultadoTecnico: "Pendiente",
+      responsable: "Área de Operaciones",
+      fechaActualizacion: "05/10/2025 09:30 a.m.",
+      categoria: "moderada",
+    },
+    {
+      titulo: "Presencia de turbidez visible",
+      lugar: "Comas",
+      fecha: "06/10/2025",
+      hora: "04:30 p.m.",
+      descripcion: "Evita consumir directamente.",
+      estado: "Solucionado",
+      imagen: null,
+      cloro: 0.3,
+      bacterias: 10,
+      comentarioTecnico: "",
+      resultadoTecnico: "Pendiente",
+      responsable: "Equipo de Calidad",
+      fechaActualizacion: "06/10/2025 05:00 p.m.",
+      categoria: "critica",
+    },
+  ];
 
   //  LÍDERES DE ZONA POR DISTRITO
   const lideresZona = {
@@ -492,24 +511,22 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
       nombre: "Ing. Carla Ramos",
       institucion: "SEDAPAL - Zona Este",
       telefono: "+51 987 654 321",
-      correo: "carla.ramos@sedapal.pe"
+      correo: "carla.ramos@sedapal.pe",
     },
-    "Comas": {
+    Comas: {
       nombre: "Lic. José Medina",
       institucion: "DIGESA - Lima Norte",
       telefono: "+51 934 112 233",
-      correo: "jose.medina@digesa.gob.pe"
+      correo: "jose.medina@digesa.gob.pe",
     },
     "Villa El Salvador": {
       nombre: "Ing. Luis Gutiérrez",
       institucion: "SUNASS - Lima Sur",
       telefono: "+51 945 778 889",
-      correo: "luis.gutierrez@sunass.gob.pe"
-    }
-    // Puedes seguir agregando distritos...
+      correo: "luis.gutierrez@sunass.gob.pe",
+    },
   };
 
-  // 🔹 NUEVO: labels legibles para la categoría
   const LABEL_CATEGORIA = {
     leve: "Leve",
     moderada: "Moderada",
@@ -517,58 +534,65 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
   };
 
   function interpretarCalidadAgua(cloro, bacterias) {
-    // Ejemplo simple, puedes ajustar rangos si tu profe te da otros
     if (bacterias > 0) {
       return {
         texto: "⛔ No apta para consumo (bacterias detectadas)",
-        clase: "calidad-roja"
+        clase: "calidad-roja",
       };
     }
 
     if (cloro < 0.2) {
       return {
         texto: "⚠ Bajo nivel de cloro. Se recomienda hervir el agua.",
-        clase: "calidad-amarilla"
+        clase: "calidad-amarilla",
       };
     }
 
     if (cloro > 0.8) {
       return {
         texto: "⚠ Cloro elevado. Puede alterar sabor u olor.",
-        clase: "calidad-amarilla"
+        clase: "calidad-amarilla",
       };
     }
 
     return {
       texto: "✅ Agua dentro de parámetros seguros.",
-      clase: "calidad-verde"
+      clase: "calidad-verde",
     };
   }
 
+  // ============================
+  // RENDER DE ALERTAS (con categoría)
+  // ============================
   function renderAlertas() {
+    if (!listaAlertas) return;
+
     listaAlertas.innerHTML = "";
+
     alertas.forEach((a, index) => {
       const div = document.createElement("div");
-      div.className = "alerta-card";
+
+      // Categoría segura
+      let categoria = a.categoria;
+      if (categoria !== "moderada" && categoria !== "critica") {
+        categoria = "leve";
+      }
 
       const interprete = interpretarCalidadAgua(a.cloro, a.bacterias);
-      
-let categoria = a.categoria || "leve";
 
-
-      // 🔹 NUEVO: añadir clase para color por categoría
-      div.classList.add(`alerta-${categoria}`);
+      // Clases para color
+      div.className = `alerta-card alerta-${categoria}`;
 
       div.innerHTML = `
-  <div class="alerta-info">
-    <i class="fa-regular fa-bell"></i>
-    <div class="alerta-text">
+        <div class="alerta-info">
+          <i class="fa-regular fa-bell"></i>
+          <div class="alerta-text">
 
-      <p class="alerta-categoria">${categoria.toUpperCase()}</p>
+            <p class="alerta-categoria">${categoria.toUpperCase()}</p>
+
             <p><b>Alerta:</b> ${a.titulo}</p>
 
-            <!-- 🔹 NUEVO: etiqueta visible de categoría -->
-            <p class="alerta-categoria alerta-categoria-${categoria}">
+            <p class="alerta-categoria">
               <b>Categoría:</b> ${LABEL_CATEGORIA[categoria]}
             </p>
 
@@ -620,16 +644,9 @@ let categoria = a.categoria || "leve";
               Actualizar estado
             </button>
 
-            <!-- botón contactar líder -->
             <button class="btn btn-add btn-contactar-lider" data-lugar="${a.lugar}">
               Contactar líder de zona
             </button>
-
-            ${
-              a.comentarioTecnico
-                ? `<p class="comentario-tecnico"><b>Comentario técnico:</b> ${a.comentarioTecnico}</p>`
-                : ""
-            }
 
             <button class="btn btn-add btn-compartir" data-index="${index}">
               Compartir
@@ -646,14 +663,14 @@ let categoria = a.categoria || "leve";
         );
       });
 
-      // Click en botón Revisión técnica (no dispara el alert anterior)
+      // Click en botón Revisión técnica (no dispara el alert general)
       const btnRevision = div.querySelector(".btn-revision-tecnica");
       btnRevision.addEventListener("click", (ev) => {
         ev.stopPropagation();
         alertaSeleccionada = index;
         tituloAlertaTecnica.textContent = `Alerta: ${a.titulo} - ${a.lugar}`;
         selectResultadoTecnico.value =
-          a.estado === "Descartada" ? "Descartada" : "Confirmada";
+          a.resultadoTecnico === "Descartada" ? "Descartada" : "Confirmada";
         comentarioTecnicoInput.value = a.comentarioTecnico || "";
         modalRevisionTecnica.style.display = "flex";
       });
@@ -662,6 +679,7 @@ let categoria = a.categoria || "leve";
     });
   }
 
+  // Render inicial
   renderAlertas();
 
   // Cerrar modal de revisión técnica
@@ -684,8 +702,6 @@ let categoria = a.categoria || "leve";
     const resultado = selectResultadoTecnico.value; // Confirmada / Descartada
     const comentario = comentarioTecnicoInput.value.trim();
 
-    // ✅ Solo actualizamos la parte técnica,
-    // NO tocamos el estado operativo de la alerta
     alertas[alertaSeleccionada].resultadoTecnico = resultado;
     alertas[alertaSeleccionada].comentarioTecnico = comentario;
 
@@ -746,9 +762,15 @@ let categoria = a.categoria || "leve";
     const hora = document.getElementById("hora").value.trim();
     const descripcion = document.getElementById("descripcion").value.trim();
     const imagen = inputImagen.files[0]
-    const categoria = document.getElementById("categoriaAlerta").value;
       ? URL.createObjectURL(inputImagen.files[0])
       : null;
+
+    // select de categoría (si existe)
+    const selectCategoria = document.getElementById("categoriaAlerta");
+    let categoria = "leve";
+    if (selectCategoria && selectCategoria.value) {
+      categoria = selectCategoria.value; // leve / moderada / critica
+    }
 
     if (!titulo || !lugar || !fecha || !hora || !descripcion) {
       mensajeForm.textContent = "Por favor, rellena todos los campos.";
@@ -756,7 +778,7 @@ let categoria = a.categoria || "leve";
       return;
     }
 
-        alertas.push({
+    alertas.push({
       titulo,
       lugar,
       fecha,
@@ -764,15 +786,14 @@ let categoria = a.categoria || "leve";
       descripcion,
       estado: "En proceso",
       imagen,
-      cloro: 0.4,          // valor por defecto
-      bacterias: 0,        // valor por defecto
+      cloro: 0.4, // valor por defecto
+      bacterias: 0, // valor por defecto
       comentarioTecnico: "",
       resultadoTecnico: "Pendiente",
       responsable: "No asignado",
       fechaActualizacion: new Date().toLocaleString("es-PE"),
-      categoria,        
+      categoria,
     });
-
 
     renderAlertas();
     mensajeForm.textContent = "¡Alerta guardada correctamente!";
@@ -844,7 +865,11 @@ let categoria = a.categoria || "leve";
         <p><b>${c.titulo}</b></p>
         <p><b>Fecha:</b> ${c.fecha}</p>
         <p style="font-size: 13px;">${c.descripcion}</p>
-        ${c.enlace ? `<p style="font-size: 13px;"><a href="${c.enlace}" target="_blank">Ver informe oficial</a></p>` : ""}
+        ${
+          c.enlace
+            ? `<p style="font-size: 13px;"><a href="${c.enlace}" target="_blank">Ver informe oficial</a></p>`
+            : ""
+        }
       `;
 
       const botones = document.createElement("div");
@@ -853,7 +878,9 @@ let categoria = a.categoria || "leve";
       const btnEditar = document.createElement("button");
       btnEditar.textContent = "Editar";
       btnEditar.className = "btn btn-add";
-      btnEditar.addEventListener("click", () => cargarComunicadoEnFormulario(index));
+      btnEditar.addEventListener("click", () =>
+        cargarComunicadoEnFormulario(index)
+      );
 
       const btnEliminar = document.createElement("button");
       btnEliminar.textContent = "Eliminar";
@@ -909,7 +936,8 @@ let categoria = a.categoria || "leve";
     const enlace = inputEnlaceCom.value.trim();
 
     if (!titulo || !fecha || !descripcion) {
-      mensajeComunicado.textContent = "Por favor, completa título, fecha y descripción.";
+      mensajeComunicado.textContent =
+        "Por favor, completa título, fecha y descripción.";
       mensajeComunicado.style.color = "red";
       return;
     }
@@ -939,21 +967,47 @@ let categoria = a.categoria || "leve";
   const btnSeguridadAgua = document.getElementById("btnSeguridadAgua");
   const modalSeguridadAgua = document.getElementById("modalSeguridadAgua");
   const closeSeguridadAgua = document.getElementById("closeSeguridadAgua");
-  const selectDistritoSeguridad = document.getElementById("selectDistritoSeguridad");
+  const selectDistritoSeguridad = document.getElementById(
+    "selectDistritoSeguridad"
+  );
   const btnEvaluarSeguridad = document.getElementById("btnEvaluarSeguridad");
   const resultadoSeguridad = document.getElementById("resultadoSeguridad");
 
   const seguridadPorDistrito = {
-    "San Juan de Lurigancho": { segura: false, mensaje: "⚠ Incidencias recientes. Hervir antes de consumir." },
-    "Comas": { segura: false, mensaje: "⚠ Agua no recomendable para consumo directo." },
-    "San Martín de Porres": { segura: true, mensaje: "✅ Agua apta para consumo." },
-    "Villa El Salvador": { segura: true, mensaje: "✅ Agua segura y estable." },
-    "Los Olivos": { segura: true, mensaje: "✅ Agua apta, mantener limpieza en almacenamiento." },
-    "Ate": { segura: false, mensaje: "⚠ Se registraron niveles bajos de cloro. Hervir 1 minuto." },
-    "Rímac": { segura: true, mensaje: "✅ Agua dentro de los parámetros aceptables." },
-    "Surco": { segura: true, mensaje: "✅ Agua segura para consumo." },
-    "Breña": { segura: false, mensaje: "⚠ Recomendación: no consumir directamente del caño." },
-    "Chorrillos": { segura: true, mensaje: "✅ Agua apta para consumo." }
+    "San Juan de Lurigancho": {
+      segura: false,
+      mensaje: "⚠ Incidencias recientes. Hervir antes de consumir.",
+    },
+    Comas: {
+      segura: false,
+      mensaje: "⚠ Agua no recomendable para consumo directo.",
+    },
+    "San Martín de Porres": {
+      segura: true,
+      mensaje: "✅ Agua apta para consumo.",
+    },
+    "Villa El Salvador": {
+      segura: true,
+      mensaje: "✅ Agua segura y estable.",
+    },
+    "Los Olivos": {
+      segura: true,
+      mensaje: "✅ Agua apta, mantener limpieza en almacenamiento.",
+    },
+    Ate: {
+      segura: false,
+      mensaje: "⚠ Se registraron niveles bajos de cloro. Hervir 1 minuto.",
+    },
+    Rímac: {
+      segura: true,
+      mensaje: "✅ Agua dentro de los parámetros aceptables.",
+    },
+    Surco: { segura: true, mensaje: "✅ Agua segura para consumo." },
+    Breña: {
+      segura: false,
+      mensaje: "⚠ Recomendación: no consumir directamente del caño.",
+    },
+    Chorrillos: { segura: true, mensaje: "✅ Agua apta para consumo." },
   };
 
   btnSeguridadAgua?.addEventListener("click", () => {
@@ -992,14 +1046,20 @@ let categoria = a.categoria || "leve";
   const closePreferencias = document.getElementById("closePreferencias");
   const selectTipoAlerta = document.getElementById("selectTipoAlerta");
   const selectFrecuencia = document.getElementById("selectFrecuencia");
-  const btnGuardarPreferencias = document.getElementById("btnGuardarPreferencias");
-  const modalConfirmPreferencias = document.getElementById("modalConfirmPreferencias");
+  const btnGuardarPreferencias = document.getElementById(
+    "btnGuardarPreferencias"
+  );
+  const modalConfirmPreferencias = document.getElementById(
+    "modalConfirmPreferencias"
+  );
   const btnPrefSi = document.getElementById("btnPrefSi");
   const btnPrefNo = document.getElementById("btnPrefNo");
 
   // Abrir modal de preferencias (cargando lo guardado si existe)
   btnConfigPreferencias?.addEventListener("click", () => {
-    const prefs = JSON.parse(localStorage.getItem("preferenciasAlertas") || "{}");
+    const prefs = JSON.parse(
+      localStorage.getItem("preferenciasAlertas") || "{}"
+    );
     if (prefs.tipo) selectTipoAlerta.value = prefs.tipo;
     if (prefs.frecuencia) selectFrecuencia.value = prefs.frecuencia;
     modalPreferencias.style.display = "flex";
@@ -1156,5 +1216,3 @@ let categoria = a.categoria || "leve";
     }
   });
 });
-
-
