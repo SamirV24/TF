@@ -41,6 +41,114 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
+  // ====================================
+// INFORME MENSUAL (NUEVO)
+// ====================================
+const btnGenerarInforme = document.getElementById("btnGenerarInforme");
+const modalInforme = document.getElementById("modalInforme");
+const closeInforme = document.getElementById("closeInforme");
+const graficoCanvas = document.getElementById("graficoDistritos");
+const estadisticasDistritos = document.getElementById("estadisticasDistritos");
+let grafico;
+
+// Abrir modal
+btnGenerarInforme?.addEventListener("click", () => {
+  modalInforme.style.display = "flex";
+  generarInformeMensual();
+});
+
+// Cerrar modal
+closeInforme?.addEventListener("click", () => {
+  modalInforme.style.display = "none";
+});
+
+  function generarInformeMensual() {
+  // agrupar alertas por distrito
+  const resumen = {};
+
+  alertas.forEach(a => {
+    if (!resumen[a.lugar]) {
+      resumen[a.lugar] = {
+        cantidad: 0,
+        cloroTotal: 0,
+        bacteriasTotal: 0
+      };
+    }
+
+    resumen[a.lugar].cantidad++;
+    resumen[a.lugar].cloroTotal += a.cloro;
+    resumen[a.lugar].bacteriasTotal += a.bacterias;
+  });
+
+  const labels = Object.keys(resumen);
+  const datosCloro = labels.map(d => (resumen[d].cloroTotal / resumen[d].cantidad).toFixed(2));
+  const datosBacterias = labels.map(d => (resumen[d].bacteriasTotal / resumen[d].cantidad).toFixed(2));
+
+  // Si ya existe gráfico, destruirlo antes de crear otro
+  if (grafico) grafico.destroy();
+
+  grafico = new Chart(graficoCanvas, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Promedio de cloro (mg/L)",
+          data: datosCloro,
+          backgroundColor: "rgba(54, 162, 235, 0.7)"
+        },
+        {
+          label: "Promedio de bacterias (NMP/100ml)",
+          data: datosBacterias,
+          backgroundColor: "rgba(255, 99, 132, 0.7)"
+        }
+      ]
+    }
+  });
+
+  // Generar estadísticas detalladas
+  estadisticasDistritos.innerHTML = labels
+    .map(d => `
+      <p><b>${d}</b> — ${resumen[d].cantidad} alertas  
+        | Cloro promedio: ${datosCloro[labels.indexOf(d)]} mg/L  
+        | Bacterias promedio: ${datosBacterias[labels.indexOf(d)]} NMP/100ml
+      </p>
+    `)
+    .join("");
+}
+
+
+  const btnExportarPDF = document.getElementById("btnExportarPDF");
+
+btnExportarPDF?.addEventListener("click", async () => {
+  const { jsPDF } = window.jspdf;
+
+  const pdf = new jsPDF();
+
+  pdf.setFontSize(18);
+  pdf.text("Informe Mensual de Calidad del Agua", 10, 15);
+
+  // Imagen del gráfico
+  const imgData = graficoCanvas.toDataURL("image/png");
+  pdf.addImage(imgData, "PNG", 10, 25, 180, 80);
+
+  pdf.setFontSize(14);
+  pdf.text("Resumen por distrito:", 10, 120);
+
+  let y = 130;
+  const texto = estadisticasDistritos.innerText.split("\n");
+
+  texto.forEach(linea => {
+    pdf.text(linea, 10, y);
+    y += 8;
+  });
+
+  pdf.save("informe-mensual-aquaalert.pdf");
+});
+
+
+  
   // ====================================
   // NOTIFICACIONES PERSONALIZADAS
   // ====================================
@@ -785,4 +893,5 @@ ${
     }
   });
 });
+
 
