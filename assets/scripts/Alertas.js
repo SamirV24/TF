@@ -21,63 +21,36 @@ hamburger.addEventListener("click", () => {
 // ESPERAR A QUE HTML CARGUE
 // ====================================
 document.addEventListener("DOMContentLoaded", () => {
+
   // ====================================
-  // ENCUESTAS SOBRE SERVICIO DE AGUA
+  // ENCUESTAS (VERSIÓN SIMPLE)
   // ====================================
   const btnEncuestas = document.getElementById("btnEncuestas");
-  const modalEncuestas = document.getElementById("modalEncuestas");
-  const closeEncuestas = document.getElementById("closeEncuestas");
-  const btnEncuestaSi = document.getElementById("btnEncuestaSi");
-  const btnEncuestaNo = document.getElementById("btnEncuestaNo");
 
   btnEncuestas?.addEventListener("click", () => {
-    modalEncuestas.style.display = "flex";
-  });
-
-  closeEncuestas?.addEventListener("click", () => {
-    modalEncuestas.style.display = "none";
-  });
-
-  btnEncuestaSi?.addEventListener("click", () => {
-    alert(
-      "✔ ¡Gracias! Recibirás encuestas para ayudarnos a mejorar el servicio de agua."
+    const respuesta = confirm(
+      "¿Deseas recibir encuestas sobre la calidad del agua y el servicio?"
     );
-    localStorage.setItem("recibirEncuestas", "si");
-    modalEncuestas.style.display = "none";
-  });
 
-  btnEncuestaNo?.addEventListener("click", () => {
-    alert("No recibirás encuestas por ahora.");
-    localStorage.setItem("recibirEncuestas", "no");
-    modalEncuestas.style.display = "none";
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modalEncuestas) {
-      modalEncuestas.style.display = "none";
+    if (respuesta) {
+      localStorage.setItem("recibirEncuestas", "si");
+      alert("✔ Gracias. Te enviaremos encuestas breves.");
+    } else {
+      localStorage.setItem("recibirEncuestas", "no");
+      alert("No recibirás encuestas por ahora.");
     }
   });
 
   // ====================================
   // NOTIFICACIONES PERSONALIZADAS
   // ====================================
-  const btnNotifPersonalizadas = document.getElementById(
-    "btnNotifPersonalizadas"
-  );
-  const modalNotifPersonalizadas = document.getElementById(
-    "modalNotifPersonalizadas"
-  );
-  const closeNotifPersonalizadas = document.getElementById(
-    "closeNotifPersonalizaciones"
-  );
+  const btnNotifPersonalizadas = document.getElementById("btnNotifPersonalizadas");
+  const modalNotifPersonalizadas = document.getElementById("modalNotifPersonalizadas");
+  const closeNotifPersonalizadas = document.getElementById("closeNotifPersonalizaciones");
   const btnConfirmarNotif = document.getElementById("btnConfirmarNotif");
   const selectDistritoNotif = document.getElementById("selectDistritoNotif");
-  const modalConfirmacionNotif = document.getElementById(
-    "modalConfirmacionNotif"
-  );
-  const closeConfirmacionNotif = document.getElementById(
-    "closeConfirmacionNotif"
-  );
+  const modalConfirmacionNotif = document.getElementById("modalConfirmacionNotif");
+  const closeConfirmacionNotif = document.getElementById("closeConfirmacionNotif");
   const btnConfirmarSi = document.getElementById("btnConfirmarSi");
   const btnConfirmarNo = document.getElementById("btnConfirmarNo");
 
@@ -103,9 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnConfirmarSi?.addEventListener("click", () => {
     const distrito = selectDistritoNotif.value;
-    alert(
-      `✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`
-    );
+    alert(`✔ Notificaciones activadas.\nRecibirás alertas por SMS cuando se detecte agua no segura en ${distrito}.`);
     modalNotifPersonalizadas.style.display = "none";
     modalConfirmacionNotif.style.display = "none";
   });
@@ -126,9 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const distritoSeleccionado = filtroDistrito.value;
     const tarjetas = document.querySelectorAll(".alerta-card");
     tarjetas.forEach((card) => {
-      const lugar = card
-        .querySelector(".alerta-lugar")
-        .textContent.trim();
+      const lugar = card.querySelector(".alerta-lugar").textContent.trim();
       card.style.display =
         distritoSeleccionado === "todos" || lugar === distritoSeleccionado
           ? "flex"
@@ -209,18 +178,16 @@ document.addEventListener("DOMContentLoaded", () => {
           <li><a href="#" id="cerrarSesionFooter">Cerrar Sesión</a></li>
         </ul>
       `;
-      document
-        .getElementById("cerrarSesionFooter")
-        ?.addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.removeItem("usuarioActivo");
-          window.location.href = "index.html";
-        });
+      document.getElementById("cerrarSesionFooter")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("usuarioActivo");
+        window.location.href = "index.html";
+      });
     }
   }
 
   // ====================================
-  // ALERTAS (con estados e imágenes)
+  // ALERTAS + IMAGEN
   // ====================================
   let alertas = [
     {
@@ -255,9 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderAlertas() {
     listaAlertas.innerHTML = "";
     alertas.forEach((a) => {
-      if (!a.estado) a.estado = "En proceso";
       const div = document.createElement("div");
       div.className = "alerta-card";
+
       div.innerHTML = `
         <div class="alerta-info">
           <i class="fa-regular fa-bell"></i>
@@ -266,34 +233,25 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><b>Lugar:</b> <span class="alerta-lugar">${a.lugar}</span></p>
             <p><b>Fecha:</b> ${a.fecha}</p>
             <p><b>Hora:</b> ${a.hora}</p>
-            ${
-              a.imagen
-                ? `<img src="${a.imagen}" alt="Imagen Alerta" class="alerta-img" />`
-                : ""
-            }
-            <p><b>Estado:</b> <span class="estado ${a.estado
-              .replace(" ", "-")
-              .toLowerCase()}">${a.estado}</span></p>
+            ${a.imagen ? `<img src="${a.imagen}" class="alerta-img" />` : ""}
+            <p><b>Estado:</b> <span class="estado ${a.estado.replace(" ", "-").toLowerCase()}">${a.estado}</span></p>
           </div>
         </div>
         <i class="fa-solid fa-arrow-right"></i>
       `;
+
       div.addEventListener("click", () => {
-        alert(
-          `Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${
-            a.fecha
-          }\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${
-            a.descripcion
-          }`
-        );
+        alert(`Detalles de la alerta:\n\nTítulo: ${a.titulo}\nLugar: ${a.lugar}\nFecha: ${a.fecha}\nHora: ${a.hora}\nEstado: ${a.estado}\n\nDescripción: ${a.descripcion}`);
       });
+
       listaAlertas.appendChild(div);
     });
   }
+
   renderAlertas();
 
   // ====================================
-  // AGREGAR NUEVA ALERTA + IMAGEN
+  // AGREGAR NUEVA ALERTA
   // ====================================
   const modal = document.getElementById("modalAlerta");
   const btnAdd = document.getElementById("btnAddAlerta");
@@ -320,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Mostrar vista previa de la imagen
   inputImagen?.addEventListener("change", () => {
     const file = inputImagen.files[0];
     if (file) {
@@ -337,6 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   formAlerta?.addEventListener("submit", (e) => {
     e.preventDefault();
+
     const titulo = document.getElementById("titulo").value.trim();
     const lugar = document.getElementById("lugar").value.trim();
     const fecha = document.getElementById("fecha").value.trim();
@@ -361,9 +319,11 @@ document.addEventListener("DOMContentLoaded", () => {
       estado: "En proceso",
       imagen,
     });
+
     renderAlertas();
     mensajeForm.textContent = "¡Alerta guardada correctamente!";
     mensajeForm.style.color = "green";
+
     formAlerta.reset();
     previewImagen.style.display = "none";
 
@@ -373,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ====================================
-  // COMUNICADOS OFICIALES (DIGESA)
+  // COMUNICADOS DIGESA
   // ====================================
   const btnComunicados = document.getElementById("btnComunicados");
   const modalComunicados = document.getElementById("modalComunicados");
@@ -383,20 +343,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const formComunicado = document.getElementById("formComunicado");
   const mensajeComunicado = document.getElementById("mensajeComunicado");
 
-  const tituloFormComunicado =
-    document.getElementById("tituloFormComunicado");
+  const tituloFormComunicado = document.getElementById("tituloFormComunicado");
 
   const inputTituloCom = document.getElementById("tituloComunicado");
   const inputFechaCom = document.getElementById("fechaComunicado");
   const inputDescripcionCom = document.getElementById("descripcionComunicado");
   const inputEnlaceCom = document.getElementById("enlaceComunicado");
 
-  let comunicados = JSON.parse(
-    localStorage.getItem("comunicadosDigesa") || "[]"
-  );
+  let comunicados = JSON.parse(localStorage.getItem("comunicadosDigesa") || "[]");
   let indiceEditando = null;
 
-  // Mostrar modal de comunicados
   btnComunicados?.addEventListener("click", () => {
     renderComunicados();
     limpiarFormularioComunicado();
@@ -406,7 +362,6 @@ document.addEventListener("DOMContentLoaded", () => {
     modalComunicados.style.display = "flex";
   });
 
-  // Cerrar modal
   closeComunicados?.addEventListener("click", () => {
     modalComunicados.style.display = "none";
   });
@@ -417,7 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Renderizar lista
   function renderComunicados() {
     listaComunicados.innerHTML = "";
 
@@ -436,11 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><b>${c.titulo}</b></p>
         <p><b>Fecha:</b> ${c.fecha}</p>
         <p style="font-size: 13px;">${c.descripcion}</p>
-        ${
-          c.enlace
-            ? `<p style="font-size: 13px;"><a href="${c.enlace}" target="_blank">Ver informe oficial</a></p>`
-            : ""
-        }
+        ${c.enlace ? `<p style="font-size: 13px;"><a href="${c.enlace}" target="_blank">Ver informe oficial</a></p>` : ""}
       `;
 
       const botones = document.createElement("div");
@@ -449,9 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const btnEditar = document.createElement("button");
       btnEditar.textContent = "Editar";
       btnEditar.className = "btn btn-add";
-      btnEditar.addEventListener("click", () =>
-        cargarComunicadoEnFormulario(index)
-      );
+      btnEditar.addEventListener("click", () => cargarComunicadoEnFormulario(index));
 
       const btnEliminar = document.createElement("button");
       btnEliminar.textContent = "Eliminar";
@@ -507,8 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const enlace = inputEnlaceCom.value.trim();
 
     if (!titulo || !fecha || !descripcion) {
-      mensajeComunicado.textContent =
-        "Por favor, completa título, fecha y descripción.";
+      mensajeComunicado.textContent = "Por favor, completa título, fecha y descripción.";
       mensajeComunicado.style.color = "red";
       return;
     }
@@ -517,12 +464,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (indiceEditando !== null) {
       comunicados[indiceEditando] = nuevo;
-      mensajeComunicado.textContent =
-        "Comunicado actualizado correctamente.";
+      mensajeComunicado.textContent = "Comunicado actualizado correctamente.";
     } else {
       comunicados.push(nuevo);
-      mensajeComunicado.textContent =
-        "Comunicado guardado correctamente.";
+      mensajeComunicado.textContent = "Comunicado guardado correctamente.";
     }
 
     mensajeComunicado.style.color = "green";
@@ -535,63 +480,30 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ====================================
-  // SEGURIDAD DEL AGUA (BOTÓN NUEVO)
+  // SEGURIDAD DEL AGUA
   // ====================================
   const btnSeguridadAgua = document.getElementById("btnSeguridadAgua");
   const modalSeguridadAgua = document.getElementById("modalSeguridadAgua");
   const closeSeguridadAgua = document.getElementById("closeSeguridadAgua");
-  const selectDistritoSeguridad = document.getElementById(
-    "selectDistritoSeguridad"
-  );
+  const selectDistritoSeguridad = document.getElementById("selectDistritoSeguridad");
   const btnEvaluarSeguridad = document.getElementById("btnEvaluarSeguridad");
   const resultadoSeguridad = document.getElementById("resultadoSeguridad");
 
   const seguridadPorDistrito = {
-    "San Juan de Lurigancho": {
-      segura: false,
-      mensaje: "⚠ Incidencias recientes. Hervir antes de consumir.",
-    },
-    Comas: {
-      segura: false,
-      mensaje: "⚠ Agua no recomendable para consumo directo.",
-    },
-    "San Martín de Porres": {
-      segura: true,
-      mensaje: "✅ Agua apta para consumo.",
-    },
-    "Villa El Salvador": {
-      segura: true,
-      mensaje: "✅ Agua segura y estable.",
-    },
-    "Los Olivos": {
-      segura: true,
-      mensaje: "✅ Agua apta, mantener limpieza en almacenamiento.",
-    },
-    Ate: {
-      segura: false,
-      mensaje: "⚠ Se registraron niveles bajos de cloro. Hervir 1 minuto.",
-    },
-    Rímac: {
-      segura: true,
-      mensaje: "✅ Agua dentro de los parámetros aceptables.",
-    },
-    Surco: {
-      segura: true,
-      mensaje: "✅ Agua segura para consumo.",
-    },
-    Breña: {
-      segura: false,
-      mensaje: "⚠ Recomendación: no consumir directamente del caño.",
-    },
-    Chorrillos: {
-      segura: true,
-      mensaje: "✅ Agua apta para consumo.",
-    },
+    "San Juan de Lurigancho": { segura: false, mensaje: "⚠ Incidencias recientes. Hervir antes de consumir." },
+    "Comas": { segura: false, mensaje: "⚠ Agua no recomendable para consumo directo." },
+    "San Martín de Porres": { segura: true, mensaje: "✅ Agua apta para consumo." },
+    "Villa El Salvador": { segura: true, mensaje: "✅ Agua segura y estable." },
+    "Los Olivos": { segura: true, mensaje: "✅ Agua apta, mantener limpieza en almacenamiento." },
+    "Ate": { segura: false, mensaje: "⚠ Se registraron niveles bajos de cloro. Hervir 1 minuto." },
+    "Rímac": { segura: true, mensaje: "✅ Agua dentro de los parámetros aceptables." },
+    "Surco": { segura: true, mensaje: "✅ Agua segura para consumo." },
+    "Breña": { segura: false, mensaje: "⚠ Recomendación: no consumir directamente del caño." },
+    "Chorrillos": { segura: true, mensaje: "✅ Agua apta para consumo." }
   };
 
   btnSeguridadAgua?.addEventListener("click", () => {
     modalSeguridadAgua.style.display = "flex";
-
     selectDistritoSeguridad.value = "";
     resultadoSeguridad.textContent = "";
     resultadoSeguridad.style.color = "";
@@ -603,14 +515,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnEvaluarSeguridad?.addEventListener("click", () => {
     const distrito = selectDistritoSeguridad.value;
-
     if (!distrito) {
       alert("Selecciona un distrito.");
       return;
     }
-
     const data = seguridadPorDistrito[distrito];
-
     resultadoSeguridad.textContent = data.mensaje;
     resultadoSeguridad.style.color = data.segura ? "green" : "red";
   });
@@ -621,78 +530,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ====================================
-  // CONFIGURAR PREFERENCIAS
-  // ====================================
-  const btnConfigPreferencias = document.getElementById(
-    "btnConfigPreferencias"
-  );
-  const modalPreferencias = document.getElementById("modalPreferencias");
-  const closePreferencias = document.getElementById("closePreferencias");
-  const selectTipoAlerta = document.getElementById("selectTipoAlerta");
-  const selectFrecuencia = document.getElementById("selectFrecuencia");
-  const btnGuardarPreferencias = document.getElementById(
-    "btnGuardarPreferencias"
-  );
-  const modalConfirmPreferencias = document.getElementById(
-    "modalConfirmPreferencias"
-  );
-  const btnPrefSi = document.getElementById("btnPrefSi");
-  const btnPrefNo = document.getElementById("btnPrefNo");
-
-  // Abrir modal de preferencias (cargando lo guardado si existe)
-  btnConfigPreferencias?.addEventListener("click", () => {
-    const prefs = JSON.parse(
-      localStorage.getItem("preferenciasAlertas") || "{}"
-    );
-    if (prefs.tipo) selectTipoAlerta.value = prefs.tipo;
-    if (prefs.frecuencia) selectFrecuencia.value = prefs.frecuencia;
-
-    modalPreferencias.style.display = "flex";
-  });
-
-  // Cerrar modal de preferencias
-  closePreferencias?.addEventListener("click", () => {
-    modalPreferencias.style.display = "none";
-  });
-
-  // Abrir confirmación de guardar
-  btnGuardarPreferencias?.addEventListener("click", () => {
-    modalConfirmPreferencias.style.display = "flex";
-  });
-
-  // Confirmar guardado
-  btnPrefSi?.addEventListener("click", () => {
-    const preferencias = {
-      tipo: selectTipoAlerta.value,
-      frecuencia: selectFrecuencia.value,
-    };
-    localStorage.setItem(
-      "preferenciasAlertas",
-      JSON.stringify(preferencias)
-    );
-
-    alert(
-      `✔ Preferencias guardadas.\nTipo: ${preferencias.tipo}\nFrecuencia: ${preferencias.frecuencia}`
-    );
-
-    modalPreferencias.style.display = "none";
-    modalConfirmPreferencias.style.display = "none";
-  });
-
-  // Cancelar guardado
-  btnPrefNo?.addEventListener("click", () => {
-    modalConfirmPreferencias.style.display = "none";
-  });
-
-  // Cerrar modales de preferencias al hacer clic fuera
-  window.addEventListener("click", (e) => {
-    if (e.target === modalPreferencias) {
-      modalPreferencias.style.display = "none";
-    }
-    if (e.target === modalConfirmPreferencias) {
-      modalConfirmPreferencias.style.display = "none";
-    }
-  });
 });
-
