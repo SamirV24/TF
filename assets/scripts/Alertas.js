@@ -1,3 +1,47 @@
+// ====================================
+// ENCUESTAS SOBRE SERVICIO DE AGUA
+// ====================================
+
+const btnEncuestas = document.getElementById("btnEncuestas");
+const modalEncuestas = document.getElementById("modalEncuestas");
+const closeEncuestas = document.getElementById("closeEncuestas");
+const btnEncuestaSi = document.getElementById("btnEncuestaSi");
+const btnEncuestaNo = document.getElementById("btnEncuestaNo");
+
+// Abrir modal
+btnEncuestas?.addEventListener("click", () => {
+  modalEncuestas.style.display = "flex";
+});
+
+// Cerrar con X
+closeEncuestas?.addEventListener("click", () => {
+  modalEncuestas.style.display = "none";
+});
+
+// Confirmar "Sí"
+btnEncuestaSi?.addEventListener("click", () => {
+  alert(
+    "✔ ¡Perfecto! Recibirás encuestas para ayudarnos a mejorar la calidad del servicio de agua."
+  );
+  localStorage.setItem("recibirEncuestas", "si");
+  modalEncuestas.style.display = "none";
+});
+
+// Confirmar "No"
+btnEncuestaNo?.addEventListener("click", () => {
+  alert("No recibirás encuestas por ahora.");
+  localStorage.setItem("recibirEncuestas", "no");
+  modalEncuestas.style.display = "none";
+});
+
+// Cerrar modal tocando fuera
+window.addEventListener("click", (e) => {
+  if (e.target === modalEncuestas) {
+    modalEncuestas.style.display = "none";
+  }
+});
+
+
 //  MENÚ HAMBURGUESA
 const hamburger = document.getElementById("hamburger");
 const nav = document.querySelector(".nav");
@@ -569,3 +613,4 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === modalConfirmPreferencias) modalConfirmPreferencias.style.display = "none";
   });
 });
+
