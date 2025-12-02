@@ -215,6 +215,60 @@
       </div>
     </div>
 
+    <!-- MODAL COMUNICADOS RESULTADOS VERIFICADOS DIGESA -->
+<div id="modalComunicados" class="modal">
+  <div class="modal-card modal-comunicados">
+    <span class="close" id="closeComunicados">&times;</span>
+
+    <h2>Comunicados oficiales - Resultados verificados</h2>
+    <p class="modal-comunicados-descripcion">
+      Aquí se publican los comunicados con resultados confirmados por DIGESA u otras autoridades.
+    </p>
+
+    <!-- LISTA DE COMUNICADOS -->
+    <div id="listaComunicados" class="lista-comunicados">
+      <!-- Se llena dinámicamente desde Alertas.js -->
+    </div>
+
+    <hr class="modal-comunicados-divider" />
+
+    <!-- FORMULARIO PARA CREAR / EDITAR -->
+    <h3 id="tituloFormComunicado" class="form-comunicado-titulo">
+      Nuevo comunicado
+    </h3>
+
+    <form id="formComunicado" class="form-comunicado">
+      <input
+        type="text"
+        id="tituloComunicado"
+        placeholder="Título del comunicado"
+        required
+      />
+      <input
+        type="date"
+        id="fechaComunicado"
+        required
+      />
+      <textarea
+        id="descripcionComunicado"
+        placeholder="Descripción / resumen del resultado verificado"
+        rows="3"
+        required
+      ></textarea>
+      <input
+        type="url"
+        id="enlaceComunicado"
+        placeholder="Enlace al informe oficial (opcional)"
+      />
+
+      <button type="submit" class="btn btn-add btn-guardar-comunicado">
+        Guardar comunicado
+      </button>
+
+      <p id="mensajeComunicado" class="mensaje mensaje-comunicado"></p>
+    </form>
+  </div>
+</div>
     <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-container">
@@ -266,6 +320,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
