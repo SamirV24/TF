@@ -505,6 +505,13 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     // Puedes seguir agregando distritos...
   };
 
+  // 🔹 NUEVO: labels legibles para la categoría
+  const LABEL_CATEGORIA = {
+    leve: "Leve",
+    moderada: "Moderada",
+    critica: "Crítica",
+  };
+
   function interpretarCalidadAgua(cloro, bacterias) {
     // Ejemplo simple, puedes ajustar rangos si tu profe te da otros
     if (bacterias > 0) {
@@ -542,11 +549,25 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
 
       const interprete = interpretarCalidadAgua(a.cloro, a.bacterias);
 
+      // 🔹 NUEVO: determinar categoría (leve / moderada / crítica) según la calidad
+      let categoria = "leve";
+      if (interprete.clase === "calidad-amarilla") categoria = "moderada";
+      if (interprete.clase === "calidad-roja") categoria = "critica";
+
+      // 🔹 NUEVO: añadir clase para color por categoría
+      div.classList.add(`alerta-${categoria}`);
+
       div.innerHTML = `
         <div class="alerta-info">
           <i class="fa-regular fa-bell"></i>
           <div class="alerta-text">
             <p><b>Alerta:</b> ${a.titulo}</p>
+
+            <!-- 🔹 NUEVO: etiqueta visible de categoría -->
+            <p class="alerta-categoria alerta-categoria-${categoria}">
+              <b>Categoría:</b> ${LABEL_CATEGORIA[categoria]}
+            </p>
+
             <p><b>Lugar:</b> <span class="alerta-lugar">${a.lugar}</span></p>
             <p><b>Fecha:</b> ${a.fecha}</p>
             <p><b>Hora:</b> ${a.hora}</p>
@@ -1128,4 +1149,3 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     }
   });
 });
-
