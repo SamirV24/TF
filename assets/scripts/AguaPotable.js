@@ -1,50 +1,35 @@
-// ===============================
-// MENÚ HAMBURGUESA + PERFIL
-// ===============================
-const hamburger = document.getElementById("hamburger");
-const nav = document.querySelector(".nav");
-const registrarBtn = document.querySelector(".btn-registrarse");
-const iniciarSesionBtn = document.querySelector(".btn-iniciarSesion");
-
-if (hamburger) {
-  hamburger.addEventListener("click", () => {
-    nav?.classList.toggle("nav-active");
-    registrarBtn?.classList.toggle("nav-active");
-    iniciarSesionBtn?.classList.toggle("nav-active");
-
-    hamburger.classList.toggle("open");
-    if (hamburger.classList.contains("open")) {
-      hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-    } else {
-      hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
-    }
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Manejo de sesión en header/footer
+  // ====================================
+  // USUARIO LOGUEADO / PERFIL
+  // ====================================
   const nombreActivo = localStorage.getItem("usuarioActivo");
-  const authButtons = document.getElementById("auth-buttons");
-  const profileButton = document.getElementById("profile-button");
 
   if (nombreActivo) {
+    const authButtons = document.getElementById("auth-buttons");
+    const profileButton = document.getElementById("profile-button");
+
     if (authButtons) authButtons.style.display = "none";
     if (profileButton) profileButton.style.display = "block";
 
     const btnPerfil = document.getElementById("btnPerfil");
-    if (btnPerfil) btnPerfil.textContent = nombreActivo;
-
     const profileMenu = document.getElementById("profile-menu");
-    btnPerfil?.addEventListener("click", () => {
-      profileMenu?.classList.toggle("show");
-    });
 
-    document.getElementById("cerrarSesion")?.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("usuarioActivo");
-      window.location.href = "index.html";
-    });
+    if (btnPerfil) {
+      btnPerfil.textContent = nombreActivo;
+      btnPerfil.addEventListener("click", () => {
+        profileMenu && profileMenu.classList.toggle("show");
+      });
+    }
 
+    const cerrarSesion = document.getElementById("cerrarSesion");
+    if (cerrarSesion) {
+      cerrarSesion.addEventListener("click", () => {
+        localStorage.removeItem("usuarioActivo");
+        window.location.href = "index.html";
+      });
+    }
+
+    // Footer dinámico
     const footerUserSection = document.getElementById("footer-user-section");
     if (footerUserSection) {
       footerUserSection.innerHTML = `
@@ -54,141 +39,161 @@ document.addEventListener("DOMContentLoaded", () => {
           <li><a href="#" id="cerrarSesionFooter">Cerrar Sesión</a></li>
         </ul>
       `;
-      document
-        .getElementById("cerrarSesionFooter")
-        ?.addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.removeItem("usuarioActivo");
-          window.location.href = "index.html";
-        });
+      const cerrarSesionFooter = document.getElementById("cerrarSesionFooter");
+      cerrarSesionFooter?.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("usuarioActivo");
+        window.location.href = "index.html";
+      });
     }
   }
 
-  // ===============================
+  // ====================================
   // BOTÓN VOLVER ATRÁS
-  // ===============================
+  // ====================================
   const btnAtras = document.getElementById("btnAtras");
-  btnAtras?.addEventListener("click", () => {
-    window.history.back();
-  });
+  btnAtras?.addEventListener("click", () => window.history.back());
 
-  // ===============================
-  // MAPA DE PUNTOS DE AGUA POTABLE
-  // (historia: técnico SUNASS ve zonas por color de riesgo)
-  // ===============================
+  // ====================================
+  // MENÚ HAMBURGUESA
+  // ====================================
+  const hamburger = document.getElementById("hamburger");
+  const nav = document.querySelector(".nav");
+  const registrarBtn = document.querySelector(".btn-registrarse");
+  const iniciarSesionBtn = document.querySelector(".btn-iniciarSesion");
 
-  // 1. Inicializar mapa centrado en Lima
-  const map = L.map("map").setView([-12.0464, -77.0428], 11);
+  if (hamburger && nav) {
+    hamburger.addEventListener("click", () => {
+      nav.classList.toggle("nav-active");
+      registrarBtn?.classList.toggle("nav-active");
+      iniciarSesionBtn?.classList.toggle("nav-active");
 
-  // 2. Capa base (puedes cambiar el estilo si quieres)
+      hamburger.classList.toggle("open");
+      if (hamburger.classList.contains("open")) {
+        hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      } else {
+        hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      }
+    });
+  }
+
+  // ====================================
+  // MAPA LEAFLET
+  // ====================================
+  const map = L.map("map").setView([-12.0464, -77.0428], 12);
+
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
     attribution: "© OpenStreetMap contributors",
   }).addTo(map);
 
-  // 3. Función para obtener color según nivel de riesgo
-  function colorPorRiesgo(riesgo) {
-    switch (riesgo) {
-      case "alto":
-        return "#e53935"; // rojo
-      case "medio":
-        return "#fb8c00"; // naranja
-      case "bajo":
-        return "#43a047"; // verde
-      default:
-        return "#757575"; // gris
+  // ====================================
+  // ZONAS CODIFICADAS POR COLOR (RIESGO)
+  // (Historia: "Como técnico de SUNASS...")
+  // ====================================
+  const zonasRiesgo = [
+    {
+      nombre: "Zona 1 - Riesgo Alto (SJL)",
+      coords: [-12.02, -77.00],
+      nivel: "alto",
+      detalle: "Reportes recientes de contaminación microbiológica."
+    },
+    {
+      nombre: "Zona 2 - Riesgo Medio (Comas)",
+      coords: [-11.98, -77.06],
+      nivel: "medio",
+      detalle: "Variaciones de cloro residual, seguimiento en curso."
+    },
+    {
+      nombre: "Zona 3 - Riesgo Bajo (Surco)",
+      coords: [-12.12, -76.98],
+      nivel: "bajo",
+      detalle: "Parámetros dentro de límites recomendados."
     }
-  }
-
-  // 4. Puntos de monitoreo ficticios (ejemplo)
-  //    Puedes luego reemplazar coordenadas y datos por info real o de la BD.
-  const puntosAgua = [
-    {
-      nombre: "Punto SJL - Z1",
-      distrito: "San Juan de Lurigancho",
-      riesgo: "alto",
-      cloro: "0.1 mg/L",
-      bacterias: "15 NMP/100 mL",
-      descripcion: "Incidencias recientes de contaminación microbiológica.",
-      coords: [-12.0, -76.98],
-    },
-    {
-      nombre: "Punto Comas - Z2",
-      distrito: "Comas",
-      riesgo: "medio",
-      cloro: "0.25 mg/L",
-      bacterias: "2 NMP/100 mL",
-      descripcion:
-        "Se recomienda seguimiento. Leve presencia de bacterias y cloro cercano al mínimo.",
-      coords: [-11.95, -77.06],
-    },
-    {
-      nombre: "Punto SMP - Z3",
-      distrito: "San Martín de Porres",
-      riesgo: "bajo",
-      cloro: "0.5 mg/L",
-      bacterias: "0 NMP/100 mL",
-      descripcion: "Dentro de parámetros adecuados, monitoreo rutinario.",
-      coords: [-12.01, -77.09],
-    },
-    {
-      nombre: "Punto VES - Z4",
-      distrito: "Villa El Salvador",
-      riesgo: "bajo",
-      cloro: "0.45 mg/L",
-      bacterias: "0 NMP/100 mL",
-      descripcion: "Zona estable, sin reportes recientes.",
-      coords: [-12.2, -76.94],
-    },
   ];
 
-  // 5. Pintar los puntos en el mapa como círculos codificados por color
-  puntosAgua.forEach((p) => {
-    const color = colorPorRiesgo(p.riesgo);
+  function colorPorNivel(nivel) {
+    if (nivel === "alto") return "#e53935";   // rojo
+    if (nivel === "medio") return "#f9a825"; // amarillo
+    return "#43a047";                        // verde (bajo)
+  }
 
-    const marker = L.circleMarker(p.coords, {
-      radius: 10,
+  zonasRiesgo.forEach((z) => {
+    const color = colorPorNivel(z.nivel);
+    L.circle(z.coords, {
+      radius: 1200,      // metros aprox
       color,
-      weight: 2,
       fillColor: color,
-      fillOpacity: 0.6,
-    }).addTo(map);
-
-    marker.bindPopup(
-      `
-      <b>${p.nombre}</b><br/>
-      <b>Distrito:</b> ${p.distrito}<br/>
-      <b>Nivel de riesgo:</b> <span style="color:${color}; text-transform:uppercase;">${p.riesgo}</span><br/>
-      <b>Cloro:</b> ${p.cloro}<br/>
-      <b>Bacterias:</b> ${p.bacterias}<br/>
-      <small>${p.descripcion}</small>
-    `
-    );
+      fillOpacity: 0.25,
+      weight: 2
+    })
+      .addTo(map)
+      .bindPopup(`
+        <div style="font-family:Poppins,sans-serif; font-size:13px;">
+          <h3 style="margin:4px 0; color:${color};">${z.nombre}</h3>
+          <p style="margin:3px 0;"><b>Nivel de riesgo:</b> ${z.nivel.toUpperCase()}</p>
+          <p style="margin:3px 0;">${z.detalle}</p>
+          <p style="margin-top:5px; font-size:12px; color:#555;">
+            * Referencial para monitoreo. No reemplaza los informes oficiales.
+          </p>
+        </div>
+      `);
   });
 
-  // 6. Leyenda de colores (bajo / medio / alto)
-  const legend = L.control({ position: "bottomright" });
+  // ====================================
+  // PUNTOS DE AGUA POTABLE (CON GOOGLE MAPS)
+  // ====================================
+  const iconoPuntoAgua = L.icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/727/727790.png",
+    iconSize: [38, 38],
+  });
 
-  legend.onAdd = function () {
-    const div = L.DomUtil.create("div", "map-legend");
-    const niveles = [
-      { label: "Riesgo bajo", color: colorPorRiesgo("bajo") },
-      { label: "Riesgo medio", color: colorPorRiesgo("medio") },
-      { label: "Riesgo alto", color: colorPorRiesgo("alto") },
-    ];
+  const puntosAguaPotable = [
+    {
+      lat: -12.0505,
+      lng: -77.0352,
+      direccion: "Plaza Mayor de Lima",
+      descripcion: "Punto oficial de agua potable supervisado por SUNASS."
+    },
+    {
+      lat: -12.0630,
+      lng: -77.0405,
+      direccion: "Parque Universitario",
+      descripcion: "Agua clorada disponible en horario extendido."
+    },
+    {
+      lat: -12.0725,
+      lng: -77.0305,
+      direccion: "Av. Brasil 1500",
+      descripcion: "Punto estable de abastecimiento en coordinación con la EPS."
+    }
+  ];
 
-    div.innerHTML = "<h4>Nivel de riesgo</h4>";
-    niveles.forEach((n) => {
-      div.innerHTML += `
-        <div class="legend-item">
-          <span class="legend-color" style="background:${n.color}"></span>
-          <span>${n.label}</span>
+  puntosAguaPotable.forEach((p) => {
+    L.marker([p.lat, p.lng], { icon: iconoPuntoAgua })
+      .addTo(map)
+      .bindPopup(`
+        <div style="font-family: Poppins, sans-serif; text-align:center;">
+          <h3 style="color:#0077b6; margin:4px 0;">Punto de Agua Potable</h3>
+          <hr style="border:none; border-top:1px solid #ccc; margin:6px 0;">
+          <p style="margin:3px 0;"><b>Ubicación:</b> ${p.direccion}</p>
+          <p style="margin:3px 0; font-size:13px;">${p.descripcion}</p>
+          <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            p.direccion
+          )}','_blank')"
+            style="margin-top: 6px; background-color:#0077b6; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">
+            Ver en Google Maps
+          </button>
         </div>
-      `;
-    });
+      `);
+  });
 
-    return div;
-  };
-
-  legend.addTo(map);
+  // Opcional: centrar el mapa para que se vean todas las capas
+  const group = new L.featureGroup([
+    ...puntosAguaPotable.map(p => L.marker([p.lat, p.lng])),
+    ...zonasRiesgo.map(z => L.circle(z.coords, { radius: 1200 }))
+  ]);
+  map.fitBounds(group.getBounds().pad(0.3));
 });
+
+});
+
