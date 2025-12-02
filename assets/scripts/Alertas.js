@@ -2,18 +2,18 @@
 #modalInforme {
   display: none;
   position: fixed;
-  z-index: 9999;          /* Asegura que esté por encima de todo */
+  z-index: 9999;          
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);   /* Fondo oscuro transparente */
+  background: rgba(0,0,0,0.6);  
   justify-content: center;
   align-items: center;
 }
 
 #modalInforme .modal-content {
-  background: #ffffff;       /* FONDO BLANCO */
+  background: #ffffff;     
   width: 90%;
   max-width: 850px;
   padding: 25px;
@@ -23,7 +23,7 @@
   animation: aparecer 0.25s ease-in-out;
 }
 
-/* Botón cerrar (X) */
+/* Botón cerrar */
 #closeInforme {
   float: right;
   font-size: 22px;
@@ -939,6 +939,7 @@ ${
     }
   });
 });
+
 
 
 
