@@ -16,7 +16,6 @@
       rel="stylesheet"
     />
   </head>
-
   <body>
     <header class="header">
       <div class="logo">
@@ -32,9 +31,7 @@
 
       <nav class="nav">
         <div class="nav-item"><a href="SesionIniciada.html">Inicio</a></div>
-        <div class="nav-item">
-          <a href="SobreNosotros.html">Sobre Nosotros</a>
-        </div>
+        <div class="nav-item"><a href="SobreNosotros.html">Sobre Nosotros</a></div>
         <div class="nav-item"><a href="Contacto.html">Contacto</a></div>
 
         <div id="auth-buttons">
@@ -42,35 +39,54 @@
           <a href="Login.html" class="btn-iniciarSesion">Iniciar Sesión</a>
         </div>
 
-              <div id="profile-button">
-        <button class="btn-iniciarSesion" id="btnPerfil">Perfil</button>
-        <div id="profile-menu">
-          <a href="Perfil.html">Perfil</a>
-          <a href="#" id="cerrarSesion">Cerrar sesión</a>
+        <div id="profile-button">
+          <button class="btn-iniciarSesion" id="btnPerfil">Perfil</button>
+          <div id="profile-menu">
+            <a href="Perfil.html">Perfil</a>
+            <a href="#" id="cerrarSesion">Cerrar sesión</a>
+          </div>
         </div>
-      </div>
-    </header>
       </nav>
+    </header>
 
-    <main>
+    <main class="main">
       <section class="hero">
         <div class="hero-content">
-          <div class="hero-text">
-            <h1>Trabajemos juntos para combatir la falta de agua potable</h1>
-            <p>
-              AquaAlert es una herramienta que te permite reportar incidencias,
-              recibir alertas tempranas sobre riesgos de contaminación y acceder
-              a datos validados por instituciones como SUNASS, Sedapal y DIGESA.
-            </p>
-          </div>
-          <div class="hero-images">
-            <img
-              src="assets\images\alerta1.jpg"
-              alt="Persona usando app AquaAlert"
-            />
-            <img src="assets\images\alerta2.jpg" alt="Medición de agua" />
-            <img src="assets\images\alerta3.jpg" alt="Vaso con agua limpia" />
-          </div>
+          <h1>Bienvenido a AquaAlert</h1>
+          <p>
+            Monitorea la calidad del agua en tu zona, recibe alertas importantes y
+            accede a puntos seguros de abastecimiento.
+          </p>
+        </div>
+        <div class="hero-image">
+          <img src="assets\images\hero-image.svg" alt="Ilustración Agua" />
+        </div>
+      </section>
+
+      <section class="info-section">
+        <div class="info-card">
+          <i class="fa-solid fa-water"></i>
+          <h3>Calidad del Agua</h3>
+          <p>
+            Accede a información confiable sobre el estado del agua en tu distrito
+            según los últimos reportes.
+          </p>
+        </div>
+        <div class="info-card">
+          <i class="fa-solid fa-bell"></i>
+          <h3>Alertas en Tiempo Real</h3>
+          <p>
+            Recibe notificaciones cuando se detecten incidencias que puedan
+            afectar la calidad del agua.
+          </p>
+        </div>
+        <div class="info-card">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <h3>Puntos de Abastecimiento</h3>
+          <p>
+            Encuentra los puntos oficiales donde puedes acceder a agua potable
+            segura cercana a ti.
+          </p>
         </div>
       </section>
 
@@ -89,8 +105,44 @@
             <i class="fa-solid fa-map"></i>
             <h3>Mapa de Puntos de Agua Potable</h3>
           </a>
+          <!-- Nuevo servicio: Historial de Actividad (abre modal, no cambia de página) -->
+          <div class="service-card" id="serviceHistorial">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h3>Historial de Actividad</h3>
+          </div>
         </div>
       </section>
+    
+      <!-- MODAL HISTORIAL DE ACTIVIDAD -->
+      <div id="modalHistorial" class="modal">
+        <div class="modal-card modal-historial">
+          <span class="close" id="closeHistorial">&times;</span>
+
+          <h2>Historial de Actividad</h2>
+          <p class="historial-descripcion">
+            Registros de acciones realizadas por usuarios dentro del sistema.
+          </p>
+
+          <div class="historial-filtros">
+            <select id="filtroTipoHistorial">
+              <option value="todos">Todos los tipos</option>
+              <option value="Inicio de sesión">Inicio de sesión</option>
+              <option value="Intento de inicio de sesión fallido">Intentos fallidos</option>
+            </select>
+
+            <input
+              type="text"
+              id="filtroTextoHistorial"
+              placeholder="Buscar en historial..."
+            />
+          </div>
+
+          <div id="listaHistorial" class="historial-lista">
+            <!-- Historial se llena dinámicamente -->
+          </div>
+        </div>
+      </div>
+
     </main>
 
     <footer class="footer">
@@ -120,7 +172,6 @@
           </ul>
         </div>
 
-        <!-- Sección de usuario / perfil -->
         <div class="footer-col" id="footer-user-section">
           <h4 class="active">Registro</h4>
           <ul>
@@ -154,3 +205,4 @@
     <script src="assets/scripts/SesionIniciada.js"></script>
   </body>
 </html>
+
