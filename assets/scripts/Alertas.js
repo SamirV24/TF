@@ -593,6 +593,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+    // ====================================
+  // INSIGNIAS POR PARTICIPACIÓN
+  // ====================================
+  const btnReportarInfo = document.getElementById("btnReportarInfo");
+  const insigniaUsuario = document.getElementById("insigniaUsuario");
+
+  // Cargar puntos desde localStorage (o 0 si no hay)
+  let puntosParticipacion = parseInt(
+    localStorage.getItem("puntosParticipacionAquaAlert") || "0",
+    10
+  );
+
+  function obtenerInsignia(puntos) {
+    if (puntos >= 15) return "💎 Embajadora del Agua";
+    if (puntos >= 10) return "🥇 Insignia Oro";
+    if (puntos >= 5) return "🥈 Insignia Plata";
+    if (puntos >= 1) return "🥉 Insignia Bronce";
+    return "Sin insignia";
+  }
+
+  function actualizarInsignia() {
+    if (!insigniaUsuario) return;
+    insigniaUsuario.textContent = obtenerInsignia(puntosParticipacion);
+  }
+
+  // Mostrar insignia actual al cargar la página
+  actualizarInsignia();
+
+  // Cada vez que reporta/valida info, sumamos 1 punto
+  btnReportarInfo?.addEventListener("click", () => {
+    puntosParticipacion += 1;
+    localStorage.setItem(
+      "puntosParticipacionAquaAlert",
+      puntosParticipacion.toString()
+    );
+
+    const insigniaAntes = insigniaUsuario.textContent;
+    actualizarInsignia();
+    const insigniaDespues = insigniaUsuario.textContent;
+
+    if (insigniaAntes !== insigniaDespues) {
+      alert(
+        `🎉 ¡Felicitaciones! Has alcanzado una nueva insignia: ${insigniaDespues}`
+      );
+    } else {
+      alert(
+        "✅ Gracias por reportar o validar información. ¡Tu participación nos ayuda a mejorar!"
+      );
+    }
   });
+  });
+
 
 
