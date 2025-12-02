@@ -19,9 +19,20 @@ document
       .querySelector('input[placeholder="Número"]')
       .value.trim();
 
+    // NUEVO: tipo de abastecimiento
+    const selectAbastecimiento = document.getElementById("tipoAbastecimiento");
+    const tipoAbastecimiento = selectAbastecimiento.value;
+
     // VALIDACIONES
     if (!usuario || !contrasena || !nombre || !correo || !numero) {
       alert("⚠ Por favor completa todos los campos.");
+      return;
+    }
+
+    // Tipo de abastecimiento obligatorio
+    if (!tipoAbastecimiento) {
+      alert("⚠ Por favor selecciona tu tipo de abastecimiento de agua.");
+      selectAbastecimiento.focus();
       return;
     }
 
@@ -58,6 +69,13 @@ document
     localStorage.setItem("nombreRegistrado", nombre);
     localStorage.setItem("correoRegistrado", correo);
     localStorage.setItem("numeroRegistrado", numero);
+
+    // NUEVO: guardar tipo de abastecimiento
+    localStorage.setItem("abastecimientoRegistrado", tipoAbastecimiento);
+    // Y también dejarlo como el activo para usarlo en otras pantallas
+    localStorage.setItem("abastecimientoActivo", tipoAbastecimiento);
+
+    // Mantener nombre como usuario activo
     localStorage.setItem("usuarioActivo", nombre);
 
     // Redirige a la página de éxito
@@ -76,7 +94,7 @@ hamburger.addEventListener("click", () => {
   registrarBtn.classList.toggle("nav-active");
   iniciarSesionBtn.classList.toggle("nav-active");
 
-  // Cambiar ícono del menú)
+  // Cambiar ícono del menú
   hamburger.classList.toggle("open");
   if (hamburger.classList.contains("open")) {
     hamburger.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -84,3 +102,4 @@ hamburger.addEventListener("click", () => {
     hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
   }
 });
+
