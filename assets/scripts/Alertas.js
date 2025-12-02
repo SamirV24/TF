@@ -435,52 +435,56 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
   // ALERTAS + IMAGEN
   // ====================================
   let alertas = [
-    {
-      titulo: "Niveles bajos de cloro residual",
-      lugar: "San Juan de Lurigancho",
-      fecha: "05/10/2025",
-      hora: "07:45 a.m.",
-      descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
-      estado: "En proceso",
-      imagen: null,
-      cloro: 0.1,
-      bacterias: 5,
-      comentarioTecnico: "",
-      resultadoTecnico: "Pendiente",
-      responsable: "No asignado",
-      fechaActualizacion: "05/10/2025 08:00 a.m."
-    },
-    {
-      titulo: "Corte programado de servicio",
-      lugar: "Villa El Salvador",
-      fecha: "05/10/2025",
-      hora: "10:00 a.m. - 8:00 p.m.",
-      descripcion: "Corte por mantenimiento.",
-      estado: "Terminado",
-      imagen: null,
-      cloro: 0.4,
-      bacterias: 0,
-      comentarioTecnico: "",
-      resultadoTecnico: "Pendiente",
-      responsable: "Área de Operaciones",
-      fechaActualizacion: "05/10/2025 09:30 a.m."
-    },
-    {
-      titulo: "Presencia de turbidez visible",
-      lugar: "Comas",
-      fecha: "06/10/2025",
-      hora: "04:30 p.m.",
-      descripcion: "Evita consumir directamente.",
-      estado: "Solucionado",
-      imagen: null,
-      cloro: 0.3,
-      bacterias: 10,
-      comentarioTecnico: "",
-      resultadoTecnico: "Pendiente",
-      responsable: "Equipo de Calidad",
-      fechaActualizacion: "06/10/2025 05:00 p.m."
-    },
-  ];
+  {
+    titulo: "Niveles bajos de cloro residual",
+    lugar: "San Juan de Lurigancho",
+    fecha: "05/10/2025",
+    hora: "07:45 a.m.",
+    descripcion: "Se detectó un nivel de cloro inferior al recomendado.",
+    estado: "En proceso",
+    imagen: null,
+    cloro: 0.1,
+    bacterias: 5,
+    comentarioTecnico: "",
+    resultadoTecnico: "Pendiente",
+    responsable: "No asignado",
+    fechaActualizacion: "05/10/2025 08:00 a.m.",
+    categoria: "critica"  
+  },
+  {
+    titulo: "Corte programado de servicio",
+    lugar: "Villa El Salvador",
+    fecha: "05/10/2025",
+    hora: "10:00 a.m. - 8:00 p.m.",
+    descripcion: "Corte por mantenimiento.",
+    estado: "Terminado",
+    imagen: null,
+    cloro: 0.4,
+    bacterias: 0,
+    comentarioTecnico: "",
+    resultadoTecnico: "Pendiente",
+    responsable: "Área de Operaciones",
+    fechaActualizacion: "05/10/2025 09:30 a.m.",
+    categoria: "moderada"  
+  },
+  {
+    titulo: "Presencia de turbidez visible",
+    lugar: "Comas",
+    fecha: "06/10/2025",
+    hora: "04:30 p.m.",
+    descripcion: "Evita consumir directamente.",
+    estado: "Solucionado",
+    imagen: null,
+    cloro: 0.3,
+    bacterias: 10,
+    comentarioTecnico: "",
+    resultadoTecnico: "Pendiente",
+    responsable: "Equipo de Calidad",
+    fechaActualizacion: "06/10/2025 05:00 p.m.",
+    categoria: "critica"  
+  },
+];
+
 
   //  LÍDERES DE ZONA POR DISTRITO
   const lideresZona = {
@@ -548,11 +552,9 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
       div.className = "alerta-card";
 
       const interprete = interpretarCalidadAgua(a.cloro, a.bacterias);
+      
+let categoria = a.categoria || "leve";
 
-      // 🔹 NUEVO: determinar categoría (leve / moderada / crítica) según la calidad
-      let categoria = "leve";
-      if (interprete.clase === "calidad-amarilla") categoria = "moderada";
-      if (interprete.clase === "calidad-roja") categoria = "critica";
 
       // 🔹 NUEVO: añadir clase para color por categoría
       div.classList.add(`alerta-${categoria}`);
@@ -742,6 +744,7 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     const hora = document.getElementById("hora").value.trim();
     const descripcion = document.getElementById("descripcion").value.trim();
     const imagen = inputImagen.files[0]
+    const categoria = document.getElementById("categoriaAlerta").value;
       ? URL.createObjectURL(inputImagen.files[0])
       : null;
 
@@ -751,7 +754,7 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
       return;
     }
 
-    alertas.push({
+        alertas.push({
       titulo,
       lugar,
       fecha,
@@ -764,8 +767,10 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
       comentarioTecnico: "",
       resultadoTecnico: "Pendiente",
       responsable: "No asignado",
-      fechaActualizacion: new Date().toLocaleString("es-PE")
+      fechaActualizacion: new Date().toLocaleString("es-PE"),
+      categoria,        
     });
+
 
     renderAlertas();
     mensajeForm.textContent = "¡Alerta guardada correctamente!";
@@ -1149,3 +1154,4 @@ Solicitamos coordinación para la evaluación y respuesta inmediata.
     }
   });
 });
+
