@@ -312,6 +312,39 @@
       </div>
     </div>
 
+    <!-- MODAL REVISIÓN TÉCNICA DE ALERTAS -->
+<div id="modalRevisionTecnica" class="modal">
+  <div class="modal-card">
+    <span class="close" id="closeRevisionTecnica">&times;</span>
+    <h2>Revisión técnica de alerta</h2>
+
+    <p id="tituloAlertaTecnica" style="font-weight: 500; margin-bottom: 10px;">
+      <!-- Aquí se llenará el título de la alerta -->
+    </p>
+
+    <form id="formRevisionTecnica">
+      <label for="selectResultadoTecnico"><b>Resultado de la revisión:</b></label>
+      <select id="selectResultadoTecnico" class="filtro-select" style="margin-top: 5px;">
+        <option value="Confirmada">Confirmar alerta</option>
+        <option value="Descartada">Descartar alerta</option>
+      </select>
+
+      <label for="comentarioTecnico" style="margin-top: 15px;"><b>Comentario técnico:</b></label>
+      <textarea
+        id="comentarioTecnico"
+        rows="3"
+        placeholder="Explica el análisis técnico: parámetros, normativa, recomendación..."
+        style="margin-top: 5px;"
+      ></textarea>
+
+      <button type="submit" class="btn btn-add" style="margin-top: 15px;">
+        Guardar revisión
+      </button>
+    </form>
+  </div>
+</div>
+
+
     <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-container">
@@ -363,6 +396,7 @@
     <script src="assets/scripts/Alertas.js"></script>
   </body>
 </html>
+
 
 
 
